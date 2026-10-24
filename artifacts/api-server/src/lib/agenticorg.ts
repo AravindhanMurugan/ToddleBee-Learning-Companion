@@ -26,7 +26,13 @@ function textFromOutput(value: unknown): string | null {
   if (typeof value === "string") return value;
   if (!isRecord(value)) return null;
 
-  for (const key of ["explanation", "text", "answer", "content"]) {
+  for (const key of [
+    "explanation",
+    "text",
+    "answer",
+    "content",
+    "raw_output",
+  ]) {
     if (typeof value[key] === "string") return value[key];
   }
   return null;
@@ -92,7 +98,8 @@ export async function requestAgenticOrgExplanation(input: {
       return { ok: false, reason: "invalid_response" };
     }
 
-    const rawExplanation = textFromOutput(payload.output);
+    const rawExplanation =
+      textFromOutput(payload.explanation) ?? textFromOutput(payload.output);
     if (!rawExplanation) return { ok: false, reason: "invalid_response" };
 
     const explanation = rawExplanation
