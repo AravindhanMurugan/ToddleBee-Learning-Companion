@@ -310,7 +310,7 @@ paths:
     post:
       operationId: createDemoCheckout
       tags: [payments]
-      summary: Check whether Pine Labs checkout is available
+      summary: Check whether subscription checkout is available
       requestBody:
         required: true
         content:
@@ -345,7 +345,7 @@ paths:
     post:
       operationId: receivePaymentWebhook
       tags: [payments]
-      summary: Reject unverified webhook events until Pine Labs is configured
+      summary: Reject unverified webhook events until payment verification is configured
       requestBody:
         required: true
         content:
@@ -354,7 +354,7 @@ paths:
               $ref: "#/components/schemas/PaymentWebhookInput"
       responses:
         "503":
-          description: Pine Labs sandbox is unavailable
+          description: Payment webhook verification is not configured
 components:
   responses:
     BadRequest:

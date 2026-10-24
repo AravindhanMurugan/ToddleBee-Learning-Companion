@@ -12,7 +12,7 @@ const unavailable = {
   providerAvailable: false,
   status: "unavailable",
   message:
-    "Pine Labs is not connected for this demo. No payment was taken and no premium access was granted.",
+    "Subscription checkout is unavailable. No payment was taken and no premium access was granted.",
   reference: null,
 };
 
@@ -34,7 +34,7 @@ router.get("/payments/status/:reference", (req, res): void => {
   res.json(
     GetPaymentStatusResponse.parse({
       ...unavailable,
-      message: `No verified Pine Labs transaction exists for ${params.data.reference}.`,
+      message: `No verified payment transaction exists for ${params.data.reference}.`,
     }),
   );
 });
@@ -47,7 +47,7 @@ router.post("/payments/webhook", (req, res): void => {
   }
   // Provider authentication is not configured; do not accept or grant an entitlement.
   res.status(503).json({
-    error: "Pine Labs webhook verification is unavailable in this demo.",
+    error: "Payment webhook verification is not configured.",
   });
 });
 

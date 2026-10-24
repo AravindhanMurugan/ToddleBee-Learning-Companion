@@ -352,7 +352,7 @@ export const SpeakExplanationResponse = zod.unknown()
 
 
 /**
- * @summary Check whether Pine Labs checkout is available
+ * @summary Check whether subscription checkout is available
  */
 export const CreateDemoCheckoutBody = zod.object({
   "plan": zod.enum(['plus_monthly', 'practice_pack'])
@@ -386,7 +386,7 @@ export const GetPaymentStatusResponse = zod.object({
 
 
 /**
- * @summary Reject unverified webhook events until Pine Labs is configured
+ * @summary Reject unverified webhook events until payment verification is configured
  */
 export const receivePaymentWebhookBodyEventMax = 100;
 

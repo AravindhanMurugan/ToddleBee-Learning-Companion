@@ -7,7 +7,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import {
   getGetLearningProgressQueryKey,
-  useCreateDemoCheckout,
   useCreateLearningSession,
   useDecideEducatorReview,
   useExplainConcept,
@@ -398,23 +397,11 @@ export function ParentScreen() {
   const agent = useGetAgentActivity();
   const reviews = useListEducatorReviews();
   const decide = useDecideEducatorReview();
-  const checkout = useCreateDemoCheckout();
   const [showEducator, setShowEducator] = useState(false);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
-  const [paymentNotice, setPaymentNotice] = useState('');
   const [reviewNotice, setReviewNotice] = useState('');
   const localActivity = agent.data?.filter((entry) => entry.provider === 'local_demo') ?? [];
   const realActivity = agent.data?.filter((entry) => entry.provider === 'agenticorg') ?? [];
-
-  const checkPayment = async () => {
-    setPaymentNotice('');
-    try {
-      const status = await checkout.mutateAsync({ data: { plan: 'practice_pack' } });
-      setPaymentNotice(status.providerAvailable ? t.paymentReady : t.paymentUnavailable);
-    } catch {
-      setPaymentNotice(t.paymentError);
-    }
-  };
 
   const saveDecision = async (id: string, decision: 'approve' | 'edit' | 'reject', explanation?: string) => {
     setReviewNotice('');
@@ -458,9 +445,7 @@ export function ParentScreen() {
 
     <Card>
       <Eyebrow>{t.plusTitle}</Eyebrow><AppText>{t.plusBody}</AppText>
-      <AppText style={styles.smallText}>{t.noPurchase}</AppText>
-      <PrimaryButton label={checkout.isPending ? t.loading : t.checkPine} icon="shield" secondary disabled={checkout.isPending} onPress={() => void checkPayment()} testID="button-check-pine" />
-      {paymentNotice ? <Notice tone={paymentNotice === t.paymentReady ? 'success' : 'info'}>{paymentNotice}</Notice> : null}
+      <Notice>{t.noPurchase}</Notice>
     </Card>
 
     <Card>

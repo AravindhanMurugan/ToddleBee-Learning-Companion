@@ -1418,7 +1418,7 @@ export const getCreateDemoCheckoutUrl = () => {
 }
 
 /**
- * @summary Check whether Pine Labs checkout is available
+ * @summary Check whether subscription checkout is available
  */
 export const createDemoCheckout = async (checkoutInput: CheckoutInput, options?: Parameters<typeof customFetch>[1]): Promise<PaymentStatus> => {
 
@@ -1484,7 +1484,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CreateDemoCheckoutMutationVariables = {data: BodyType<CheckoutInput>}
 
     /**
- * @summary Check whether Pine Labs checkout is available
+ * @summary Check whether subscription checkout is available
  */
 export const useCreateDemoCheckout = <TError = ErrorType<unknown>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDemoCheckout>>, TError,CreateDemoCheckoutMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
@@ -1583,7 +1583,7 @@ export const getReceivePaymentWebhookUrl = () => {
 }
 
 /**
- * @summary Reject unverified webhook events until Pine Labs is configured
+ * @summary Reject unverified webhook events until payment verification is configured
  */
 export const receivePaymentWebhook = async (paymentWebhookInput: PaymentWebhookInput, options?: Parameters<typeof customFetch>[1]): Promise<unknown> => {
 
@@ -1649,7 +1649,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type ReceivePaymentWebhookMutationVariables = {data: BodyType<PaymentWebhookInput>}
 
     /**
- * @summary Reject unverified webhook events until Pine Labs is configured
+ * @summary Reject unverified webhook events until payment verification is configured
  */
 export const useReceivePaymentWebhook = <TError = ErrorType<void>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof receivePaymentWebhook>>, TError,ReceivePaymentWebhookMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}

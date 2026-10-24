@@ -1,10 +1,10 @@
 ---
-name: ToddleBee subscription preference
-description: User's stated payment-provider preference for the ToddleBee subscription model.
+name: ToddleBee subscription gating
+description: User's current decision to keep ToddleBee subscription checkout unavailable.
 ---
 
-The user wants Pine Labs to be the subscription provider for ToddleBee.
+Keep ToddleBee subscription checkout unavailable until the user selects a supported billing provider.
 
-**Why:** The user explicitly requested Pine Labs for the app's subscription model on 2026-10-24.
+**Why:** On 2026-10-24, after Cashfree was ruled out of the supported billing flow, the user chose to keep checkout unavailable for now.
 
-**How to apply:** Preserve this provider requirement in future ToddleBee subscription discussions.
+**How to apply:** Do not re-enable payment attempts or grant paid access unless the user explicitly chooses a supported provider.

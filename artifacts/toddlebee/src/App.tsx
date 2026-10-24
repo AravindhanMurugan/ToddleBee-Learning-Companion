@@ -12,12 +12,12 @@ import {
 } from 'lucide-react';
 import {
   getGetAgentActivityQueryKey, getGetLearningProgressQueryKey, getListEducatorReviewsQueryKey,
-  useCreateDemoCheckout, useCreateLearningSession, useDecideEducatorReview,
+  useCreateLearningSession, useDecideEducatorReview,
   useExplainConcept, useGetAgentActivity, useGetFractionsLesson, useGetLearningProgress, useHealthCheck,
   useListEducatorReviews, useListLessons, useListNarrationVoices, useRecordLearningEvent,
   useListQuizQuestions, useRequestIntervention, useSpeakExplanation, useSubmitQuizAnswer
 } from '@workspace/api-client-react';
-import type { EducatorReview, LessonSection, PaymentStatus, QuizAnswerResultNextAction } from '@workspace/api-client-react';
+import type { EducatorReview, LessonSection, QuizAnswerResultNextAction } from '@workspace/api-client-react';
 import { CraftPage } from './CraftPage';
 import { LotusCraftPage } from './LotusCraftPage';
 
@@ -65,8 +65,7 @@ const copy = {
     guidance: 'A few ways to help', demo: 'Demo review queue', parent: 'Parent & educator guidance',
     adminTitle: 'Educator review queue', adminText: 'Review proposed explanations before they are used.',
     pricing: 'ToddleBee Plus', pricingText: 'More room to learn, with a grown-up by your side.',
-    unavailable: 'Pine Labs checkout is currently unavailable. No payment has been taken.',
-    purchase: 'Check availability', languageName: 'English', sample: 'Sample data', local: 'Local demo',
+    languageName: 'English', sample: 'Sample data', local: 'Local demo',
     noSession: 'Start a learning session first from Home, then your progress will appear here.',
     noQueue: 'There are no review items waiting right now.', noSessions: 'No learning sessions yet.',
     quickNav: 'Quick navigation', mainNav: 'Main navigation', beeArt: 'A cheerful little bee', heroEyebrow: 'A kinder way to learn',
@@ -136,8 +135,7 @@ const copy = {
     plusPriceDisclosure: 'Proposed pricing for a future plan. These benefits are not currently active.',
     plusFeatureOne: 'More guided fraction practice', plusFeatureTwo: 'More visual examples to explore',
     plusFeatureThree: 'Family learning summaries', plusFeatureFour: 'Human educator review workflows',
-    checkoutUnavailableTitle: 'Pine Labs checkout unavailable', noPurchase: 'Plus access is not granted.',
-    checkoutChecking: 'Checking availability…', noPlanAccess: 'No plan access has been granted.',
+    checkoutUnavailableTitle: 'Subscriptions are unavailable', noPurchase: 'No payment will be taken. Plus access is not granted.',
     plusDescription: 'More practice, same gentle pace', plusBody: 'A future plan for families who want extra practice and learning tools. Plans and pricing will be shared here when they are ready.',
     proposedMonthly: '₹99/month', noAuth: 'This is not production security.',
     parentNavigation: 'Parent', plusNavigation: 'Plus',
@@ -202,8 +200,7 @@ const copy = {
     guidance: 'உதவ சில வழிகள்', demo: 'மாதிரி ஆய்வு வரிசை', parent: 'பெற்றோர் மற்றும் ஆசிரியர் வழிகாட்டி',
     adminTitle: 'ஆசிரியர் ஆய்வு வரிசை', adminText: 'பயன்படுத்துவதற்கு முன் பரிந்துரைக்கப்பட்ட விளக்கங்களைப் பாருங்கள்.',
     pricing: 'ToddleBee Plus', pricingText: 'பெரியவரின் துணையுடன் கற்க இன்னும் அதிக இடம்.',
-    unavailable: 'Pine Labs கட்டணம் தற்போது கிடைக்கவில்லை. எந்தப் பணமும் வசூலிக்கப்படவில்லை.',
-    purchase: 'கிடைப்பதைச் சரிபார்', languageName: 'தமிழ்', sample: 'மாதிரி தரவு', local: 'உள்ளூர் டெமோ',
+    languageName: 'தமிழ்', sample: 'மாதிரி தரவு', local: 'உள்ளூர் டெமோ',
     noSession: 'முதலில் முகப்பிலிருந்து கற்றல் அமர்வைத் தொடங்குங்கள். உங்கள் முன்னேற்றம் இங்கே தெரியும்.',
     noQueue: 'தற்போது ஆய்வுக்காக எதுவும் காத்திருக்கவில்லை.', noSessions: 'இன்னும் கற்றல் அமர்வுகள் இல்லை.',
     quickNav: 'விரைவு வழிசெலுத்தல்', mainNav: 'முதன்மை வழிசெலுத்தல்', beeArt: 'மகிழ்ச்சியான சிறிய தேனீ', heroEyebrow: 'அன்பான கற்றல் வழி',
@@ -273,8 +270,7 @@ const copy = {
     plusPriceDisclosure: 'எதிர்காலத் திட்டத்திற்கான முன்மொழியப்பட்ட விலை. இந்த வசதிகள் இப்போது செயல்பாட்டில் இல்லை.',
     plusFeatureOne: 'மேலும் வழிகாட்டப்பட்ட பின்னப் பயிற்சி', plusFeatureTwo: 'ஆராய கூடுதல் பட விளக்கங்கள்',
     plusFeatureThree: 'குடும்பக் கற்றல் சுருக்கங்கள்', plusFeatureFour: 'மனித ஆசிரியர் ஆய்வு வசதிகள்',
-    checkoutUnavailableTitle: 'Pine Labs கட்டணம் கிடைக்கவில்லை', noPurchase: 'Plus அணுகல் வழங்கப்படவில்லை.',
-    checkoutChecking: 'கிடைப்பதைச் சரிபார்க்கிறோம்…', noPlanAccess: 'திட்ட அணுகல் எதுவும் வழங்கப்படவில்லை.',
+    checkoutUnavailableTitle: 'சந்தா வசதி இப்போது கிடைக்கவில்லை', noPurchase: 'கட்டணம் வசூலிக்கப்படாது. Plus அணுகல் வழங்கப்படாது.',
     plusDescription: 'அதே அன்பான வேகத்தில் மேலும் பயிற்சி', plusBody: 'கூடுதல் பயிற்சி மற்றும் கற்றல் கருவிகள் கொண்ட எதிர்காலத் திட்டம். தயாரானதும் திட்ட விவரங்களும் விலையும் இங்கே பகிரப்படும்.',
     proposedMonthly: '₹99/மாதம்', noAuth: 'இது உண்மையான பாதுகாப்பு வசதி அல்ல.',
     parentNavigation: 'பெற்றோர்', plusNavigation: 'Plus',
@@ -961,16 +957,6 @@ function AdminQueue() {
 function PricingPage() {
   const { language } = useLanguage();
   const t = copy[language];
-  const checkout = useCreateDemoCheckout();
-  const [status, setStatus] = useState<PaymentStatus | null>(null);
-  const localizePaymentStatus = (value: string) => ({
-    unavailable: t.statusUnavailable, pending: t.statusPending, failed: t.statusFailed,
-    cancelled: t.statusCancelled, succeeded: t.statusSucceeded
-  }[value] || value);
-  const checkAvailability = () => checkout.mutate({ data: { plan: 'plus_monthly' } }, {
-    onSuccess: (result) => setStatus(result),
-    onError: () => setStatus({ providerAvailable: false, status: 'unavailable', message: t.unavailable, reference: null })
-  });
   return <main className="page">
     <div className="eyebrow">{t.pricingEyebrow}</div><h1>{t.pricing}</h1><p style={{ color: '#53657b', maxWidth: 670, fontSize: 17, lineHeight: 1.65 }}>{t.pricingText} {t.plansIntro}</p>
     <div className="pricing-grid">
@@ -986,8 +972,6 @@ function PricingPage() {
         <p style={{ color: '#53657b', lineHeight: 1.65 }}>{t.plusPriceDisclosure}</p>
         <ul><li>{t.plusFeatureOne}</li><li>{t.plusFeatureTwo}</li><li>{t.plusFeatureThree}</li><li>{t.plusFeatureFour}</li></ul>
         <div className="unavailable" role="status" data-testid="status-payment-unavailable"><strong>{t.checkoutUnavailableTitle}</strong><br />{t.noPurchase}</div>
-        <button className="btn btn-secondary" style={{ marginTop: 18 }} onClick={checkAvailability} disabled={checkout.isPending} data-testid="button-check-payment">{checkout.isPending ? t.checkoutChecking : t.purchase}<LockKeyhole size={17} /></button>
-        {status && <div className="notice" role="status" style={{ marginTop: 13 }} data-testid="status-checkout-result">{status.providerAvailable ? status.message : t.unavailable} · {localizePaymentStatus(status.status)}. {t.noPlanAccess}</div>}
       </section>
     </div>
   </main>;
