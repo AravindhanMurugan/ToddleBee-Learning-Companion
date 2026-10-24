@@ -1,0 +1,721 @@
+# MASTER BUILD PROMPT: TODDLEBEE — AI LEARNING COMPANION FOR CHILDREN
+
+Act as a senior full-stack engineer, AI agent engineer, UX designer, and hackathon delivery lead.
+
+Build a working, demonstrable, responsive web application called **ToddleBee**.
+
+**Tagline:** “Every child can learn. Every child can grow.”
+
+**Product positioning:** “Learning that understands you.”
+
+**Mascot:** A friendly, cheerful honeybee that represents curiosity, growth, and learning.
+
+This is a time-constrained hackathon project. I have only **THREE HOURS** to build, test, and deploy it. Prioritize a complete working product over elaborate architecture.
+
+Do not just generate a plan or UI mockup. Create the actual application, implement the main flows, run it, test the critical paths, and fix errors.
+
+---
+
+## 1. PRODUCT VISION
+
+ToddleBee is a personalized AI learning companion for children aged 8–12.
+
+It helps students:
+
+- Learn school concepts through simple, age-appropriate explanations.
+- Listen to explanations using AI-generated audio.
+- Learn in Tamil or English.
+- Practice through interactive quizzes.
+- Receive alternative explanations when they answer incorrectly.
+- Understand their learning patterns through a simple progress dashboard.
+- Ask an AI tutor for additional help.
+- Receive educator support when the AI detects repeated difficulties.
+
+The first demonstrable lesson must be **Grade 4 Mathematics: Fractions**.
+
+Demonstrate one complete learning journey:
+
+**Choose language → Start lesson → Listen → Learn → Take quiz → Receive feedback → View learning insights.**
+
+Do not build multiple full subjects. Design the code so additional lessons can be added later.
+
+## 2. TECHNOLOGY STACK
+
+Use the following stack unless the Replit environment has a clear compatibility issue:
+
+- Frontend: React, TypeScript, Vite.
+- Styling: Tailwind CSS or the simplest available responsive styling system.
+- Backend: Node.js with Express and TypeScript.
+- Database: PostgreSQL using `DATABASE_URL` if easily available. Otherwise, use a small persistent JSON/file-backed store suitable for a hackathon and deploy it with a persistent disk. Never depend on an ephemeral filesystem for production persistence.
+- AI: Use an available model API through a server-side adapter if credentials are provided.
+- Voice: ElevenLabs text-to-speech API.
+- Agentic AI: AgenticOrg TypeScript SDK or its currently documented supported API.
+- Payments: Pine Labs-approved sandbox integration, using the correct product and API documentation provided for the hackathon.
+- Hosting: Render for the deployed web application.
+
+Keep the project simple: one frontend, one backend, and one database if available.
+
+Do not introduce Redis, microservices, Kubernetes, a complex authentication platform, or a separate vector database.
+
+Use environment variables for every secret. Never put API keys in browser code, GitHub, logs, or public responses.
+
+## 3. TODDLEBEE BRANDING AND DESIGN SYSTEM
+
+The brand must consistently use the name **ToddleBee**. Do not use Kuruvi or another previous product name anywhere in the application, page titles, metadata, README, navigation, API-facing display labels, demo script, or user-facing messages.
+
+### Brand identity
+
+- Product name: ToddleBee.
+- Tagline: “Every child can learn. Every child can grow.”
+- Hero headline: “Learning that understands you.”
+- Supporting description: “A personal AI tutor that helps you learn, practice, and grow in your own language.”
+- Mascot: A friendly honeybee with rounded shapes, expressive eyes, small wings, and a warm smile.
+- Personality: Playful, supportive, curious, safe, encouraging, and trustworthy.
+
+### Color palette
+
+- Honey yellow: `#FFBF24`
+- Deep navy: `#102B50`
+- Warm cream: `#FFF9EC`
+- White: `#FFFFFF`
+- Soft sky blue: `#BDE7FF`
+- Leaf green: `#75C99B`
+- Soft coral: `#FF9278`
+- Muted text: `#53657B`
+
+Use yellow for important calls to action and brand highlights. Use navy for text and navigation. Use cream as the main background. Maintain accessible contrast.
+
+### Logo and mascot requirements
+
+Create a polished ToddleBee logo using a friendly honeybee icon alongside the word “ToddleBee.”
+
+- Make “Toddle” navy and “Bee” honey yellow.
+- Use a simple bee illustration with yellow-and-black stripes and light-blue wings.
+- The mascot may appear holding a book, pointing to a fraction illustration, or celebrating a completed lesson.
+- Use SVG or CSS illustrations for lightweight, scalable graphics where practical.
+- Create a favicon using the honeybee icon.
+- If an existing ToddleBee honeybee concept image is available in the project files, use it as a visual reference. Do not depend on a remote image to render the application.
+- Keep the bee consistent across the landing page, lesson completion screen, empty states, and small encouragement messages.
+- Do not overload every screen with large mascot illustrations.
+
+### Overall UI
+
+- Warm cream or white backgrounds.
+- Deep navy typography.
+- Honey-yellow primary buttons.
+- Rounded cards and friendly illustrations.
+- Large, accessible text and touch targets.
+- Soft shadows and subtle animations.
+- Simple visuals for fractions, pizza, chocolate, and everyday objects.
+- A small completion celebration.
+- Responsive mobile-first layout that also looks excellent on desktop.
+- Clear navigation and minimal cognitive load.
+
+Avoid an ordinary chatbot-only layout. The lesson and quiz should be the main experience.
+
+## 4. APPLICATION ROUTES
+
+Create these routes:
+
+1. `/` — Landing page.
+2. `/learn` — Lesson and interactive tutor.
+3. `/quiz` — Assessment.
+4. `/progress` — Learning insights.
+5. `/parent` — Parent/educator dashboard.
+6. `/admin` — Educator review queue, protected by a simple demo-only access mechanism.
+7. `/pricing` — ToddleBee Plus pricing and payment status.
+
+Set the document title to an appropriate ToddleBee-branded title on every route. Add a suitable description and a honeybee favicon.
+
+## 5. LANDING PAGE
+
+Build a complete landing page containing:
+
+- ToddleBee logo and honeybee mascot.
+- Headline: “Learning that understands you.”
+- Subheadline: “ToddleBee is a personalized AI tutor that helps children learn, practice, and grow in their own language.”
+- Primary button: **Start Learning**.
+- Secondary button: **Explore a Sample Lesson**.
+- Language selector: Tamil / English.
+- Age selector: 8–12.
+- Grade selector: Grade 4.
+- Featured lesson card: “Discover Fractions.”
+- Three benefit cards:
+  - Learn in Your Language.
+  - Learn at Your Pace.
+  - Understand Your Progress.
+- A fourth benefit: “With Human Support.”
+- A short section explaining that educators remain involved when additional support is needed.
+- A footer with demo status and privacy information.
+
+Use the honeybee mascot as a welcoming guide, not as a distraction.
+
+The Start Learning button must navigate to `/learn` and retain the selected language, age, and grade. The sample lesson button must open a working lesson rather than a static mockup.
+
+## 6. FRACTIONS LESSON
+
+Create a complete lesson about fractions with five short teaching sections.
+
+**Section 1: What is a fraction?**
+
+Explain that a fraction represents part of a whole.
+
+**Section 2: Pizza example**
+
+Display a pizza divided into four equal slices. Explain that one slice out of four is `1/4`.
+
+**Section 3: Chocolate example**
+
+Display a chocolate bar divided into equal parts. Explain numerator and denominator.
+
+**Section 4: Equivalent fractions**
+
+Show visually that `1/2` is equivalent to `2/4`.
+
+**Section 5: Everyday challenge**
+
+Ask the child to identify the fraction represented by a simple illustration.
+
+Each lesson section must include:
+
+- A heading.
+- A short explanation.
+- A simple visual illustration.
+- A “Listen to explanation” button.
+- An “Explain another way” button.
+- An “I understand” button.
+- A progress indicator.
+
+Provide both English and Tamil lesson content. Author and verify the Tamil content carefully. Never return English content while falsely labeling it as Tamil.
+
+Do not wait for an AI API to load the basic lesson. Ship the lesson content with the application so it works immediately.
+
+When “Explain another way” is clicked:
+
+1. Identify the current concept.
+2. Use the student's selected language.
+3. Generate a simpler explanation using a different example when the AI is available.
+4. If AI is unavailable, use a curated alternative explanation.
+5. Record the event in the student's learning activity.
+
+The tutor should encourage reasoning. It must not shame a student for a wrong answer or reveal every answer before the student has tried.
+
+## 7. ELEVENLABS AUDIO INTEGRATION
+
+Integrate ElevenLabs text-to-speech securely through the backend.
+
+Environment variables:
+
+- `ELEVENLABS_API_KEY`
+- `ELEVENLABS_VOICE_ID`
+- `ELEVENLABS_TAMIL_VOICE_ID` (optional)
+- `ELEVENLABS_MODEL_ID` (optional)
+
+Implement:
+
+`POST /api/audio/speak`
+
+Example request:
+
+```json
+{
+  "text": "A short educational explanation",
+  "language": "en"
+}
+```
+
+Requirements:
+
+- Validate text and language.
+- Limit the length of text sent to the API.
+- Keep the ElevenLabs API key on the server.
+- Use the supported ElevenLabs text-to-speech endpoint and request format from the current official documentation.
+- Return audio in a browser-playable format, such as `audio/mpeg`.
+- Show loading, playing, and error states.
+- Add pause and replay controls using the browser audio player.
+- Do not generate audio for the entire lesson at once.
+- Cache repeated lesson audio when practical.
+
+If a language-specific voice is not configured, do not pretend it is supported. Show a clear fallback using browser speech synthesis if a suitable voice is available, or provide readable lesson text.
+
+The lesson must remain usable without ElevenLabs credentials.
+
+## 8. TODDLEBEE LEARNING COACH AGENT
+
+Build a learning agent called **“ToddleBee Learning Coach.”**
+
+Its responsibility is to guide the student's learning session rather than merely answer questions.
+
+Inputs:
+
+- Student's selected language and grade.
+- Current concept.
+- Current and previous quiz answers.
+- Number of incorrect attempts.
+- Sections completed.
+- Previous explanations shown.
+
+The agent must:
+
+1. Identify the concept being studied.
+2. Examine the learner's answer history.
+3. Identify a possible misconception, without treating a single wrong answer as a definitive diagnosis.
+4. Choose a teaching strategy.
+5. Provide a short explanation or hint.
+6. Generate an appropriate next question.
+7. Recommend additional practice when needed.
+8. Recommend educator review when difficulties persist or the AI is uncertain.
+
+Use structured output with fields similar to:
+
+```json
+{
+  "concept": "fractions",
+  "observed_pattern": "may be confusing numerator and denominator",
+  "confidence": 0.78,
+  "teaching_strategy": "visual_example",
+  "explanation": "Imagine a pizza cut into four equal slices...",
+  "next_action": "show_targeted_question",
+  "needs_human_review": false,
+  "reason": "The learner has made repeated errors on this concept."
+}
+```
+
+Validate model output on the backend before using it.
+
+Do not claim the model can definitively diagnose a child's abilities or learning disabilities.
+
+## 9. AGENTICORG INTEGRATION
+
+Use AgenticOrg by Pine Labs as the agent execution and governance integration.
+
+Official resources:
+
+- https://agenticorg.pinelabs.com/
+- https://agenticorg.ai/docs/
+- https://agenticorg.hackathon.pinelabs.com/integration-workflow
+
+Use the currently documented TypeScript SDK, API, or approved integration method. Do not invent API endpoints or assume a sample method is available in every account.
+
+Create an AgenticOrg agent with the role:
+
+**“ToddleBee Learning Intervention Agent.”**
+
+Its task is to review anonymized learning-session events, identify a possible learning difficulty, prepare a teaching intervention, and create a human-review request when necessary.
+
+Expected workflow:
+
+1. The learner submits an answer.
+2. The backend records the result.
+3. The learning agent receives the concept, answer outcome, and recent attempt history.
+4. The agent recommends an explanation strategy and next question.
+5. The backend validates the result.
+6. If the student repeatedly struggles, the agent creates a review item.
+7. The educator reviews the item and approves, edits, or rejects the recommendation.
+8. The application records the decision and uses the approved correction in subsequent explanations.
+
+Use a minimal permission scope. The agent must not initiate payments, contact children externally, or make consequential decisions about a child.
+
+Log:
+
+- Agent name and run ID where available.
+- Timestamp.
+- Input event identifiers.
+- Proposed teaching strategy.
+- Result and outcome.
+- Whether human review was requested.
+- Human decision and timestamp, when applicable.
+- Errors and fallback behavior.
+
+Create a ToddleBee-branded **Agent Activity** panel that displays the real execution history returned by AgenticOrg where available.
+
+Keep an adapter interface so the frontend and learning flow do not depend on a particular SDK response structure.
+
+If AgenticOrg credentials or access are unavailable:
+
+- Build the complete local learning workflow.
+- Provide an adapter with a clearly labeled local simulation.
+- Display a visible “Demo mode — AgenticOrg not connected” status.
+- Do not fabricate AgenticOrg run IDs, executions, or audit records.
+- Make the real integration configurable without rewriting the lesson application.
+
+Document the exact steps needed to connect the AgenticOrg account and agent identifier.
+
+## 10. QUIZ AND ADAPTIVE LEARNING
+
+Create a five-question quiz that starts after the lesson.
+
+Questions should test:
+
+1. Identifying a fraction.
+2. Understanding the numerator.
+3. Understanding the denominator.
+4. Recognizing equivalent fractions.
+5. Applying fractions to an everyday situation.
+
+Use multiple-choice answers and one question at a time.
+
+Each question must have:
+
+- Four possible answers.
+- A progress indicator.
+- Immediate feedback.
+- A short explanation after answering.
+- A next-question button.
+
+Store the answer, correctness, concept, attempt count, response time where available, and hint usage.
+
+Adaptive behavior:
+
+- Correct answer: acknowledge the reasoning and move forward.
+- First incorrect attempt: show a hint and let the child retry.
+- Repeated incorrect attempts: present a simpler visual explanation and an easier question testing the same concept.
+- Repeated difficulty: flag the concept for educator review.
+- Strong performance: suggest a slightly more challenging practice question.
+
+Do not repeatedly penalize the student for the same misunderstanding.
+
+The quiz must work using predefined questions without an AI API. AI may personalize the explanations, but objective answer checking must use trusted server-side answer keys.
+
+Use ToddleBee's supportive tone. The mascot can offer encouraging messages such as “Let’s try a different way!” or “Great effort — every try helps us learn.”
+
+## 11. PROGRESS DASHBOARD
+
+Create `/progress` with a simple, understandable dashboard.
+
+Display:
+
+- Lessons started and completed.
+- Quiz questions attempted.
+- First-attempt accuracy.
+- Final accuracy after retries.
+- Concepts understood.
+- Concepts needing more practice.
+- Hints used.
+- Learning time, if reliably tracked.
+- Recent learning sessions.
+- Recommended next activity.
+
+Use visual cards and simple progress bars rather than complex analytics. Small honeybee-themed progress details are welcome, but never use punitive streaks or pressure-based rewards.
+
+Example demonstration:
+
+- Fractions: Needs practice.
+- Numerator: Improving.
+- Denominator: Understood.
+- Equivalent fractions: Needs another example.
+
+These are sample states for a seeded demo learner. Label them as sample data until actual learner interactions produce them.
+
+Do not claim a student's learning improved unless recorded before-and-after attempts support that claim.
+
+Allow the learner to restart the lesson and retake the quiz. Store session history so the behavior dashboard updates after the quiz.
+
+## 12. PARENT AND EDUCATOR DASHBOARDS
+
+Create `/parent` and `/admin`.
+
+### Parent dashboard
+
+- Display learning progress.
+- Show concepts that need additional practice.
+- Recommend the next lesson.
+- Explain that the data is educational guidance, not a formal assessment.
+- Do not expose unnecessary personal information.
+
+### Educator dashboard
+
+- Display the review queue.
+- Show the concept, anonymized attempt history, proposed intervention, and reason for escalation.
+- Provide Approve, Edit, and Reject actions.
+- Record the educator's decision and timestamp.
+- Make the approved explanation available for subsequent practice.
+- Ensure the human decision is visible in the activity history.
+
+For the hackathon, a simple demo access gate is acceptable. Clearly document that it is not production-grade authentication.
+
+## 13. TODDLEBEE PLUS AND PINE LABS PAYMENTS
+
+Create a premium parent-facing plan called **ToddleBee Plus**.
+
+- Free plan: one sample lesson and basic progress tracking.
+- Premium plan: additional practice packs, expanded learning history, and additional lessons.
+
+Use a simple illustrative price, such as ₹99/month, only as a proposed product price. Do not imply that this price or a recurring plan has been approved by Pine Labs.
+
+Implement `/pricing` with pricing details, a checkout action, and a subscription or purchase status card.
+
+Integrate the actual Pine Labs payment product made available for this hackathon. Before writing the payment integration:
+
+- Check the official integration documentation and supplied sandbox credentials.
+- Determine which Pine Labs product supports the intended checkout and, if available, recurring subscription lifecycle.
+- Use the required authentication and payment status verification.
+- Keep all secrets on the backend.
+- Use the supported checkout and callback or webhook mechanism.
+- Verify transaction status on the backend before granting premium access.
+- Store transaction references and subscription status.
+- Handle pending, successful, failed, and cancelled states.
+- Make the integration idempotent to avoid duplicate entitlement grants.
+
+Do not assume that a one-time payment automatically creates a recurring subscription. If recurring billing is not available in the supplied sandbox, implement a one-time premium-pack purchase and clearly label it as a demo purchase, rather than pretending recurring billing works.
+
+Implement:
+
+- `POST /api/payments/checkout`
+- `GET /api/payments/status/:reference`
+- `POST /api/payments/webhook`
+
+Implement only the documented request and response formats. Verify signatures or authenticity using the official prescribed method.
+
+If Pine Labs credentials are unavailable:
+
+- Keep the pricing page functional.
+- Show the payment integration status.
+- Provide a clearly labeled sandbox-unavailable demonstration path.
+- Never mark an order as a real successful payment based only on a frontend button click.
+- Never collect real card information in the demo fallback.
+
+Do not use real money or production payment credentials during the hackathon.
+
+## 14. DATA MODEL
+
+Create simple persistent entities.
+
+**StudentProfile**
+- `id`
+- `preferredLanguage`
+- `grade`
+- `createdAt`
+
+**LearningSession**
+- `id`
+- `studentId`
+- `lessonId`
+- `startedAt`
+- `completedAt`
+- `sectionsCompleted`
+
+**QuizAttempt**
+- `id`
+- `sessionId`
+- `questionId`
+- `concept`
+- `selectedAnswer`
+- `isCorrect`
+- `attemptNumber`
+- `hintUsed`
+- `createdAt`
+
+**LearningInsight**
+- `id`
+- `sessionId`
+- `concept`
+- `observedPattern`
+- `recommendedStrategy`
+- `confidence`
+- `needsHumanReview`
+- `createdAt`
+
+**EducatorReview**
+- `id`
+- `insightId`
+- `status`
+- `proposedExplanation`
+- `approvedExplanation`
+- `reviewerType`
+- `reviewedAt`
+
+**AgentRun**
+- `id`
+- `provider`
+- `externalRunId`
+- `status`
+- `inputSummary`
+- `outputSummary`
+- `createdAt`
+
+**Payment**
+- `id`
+- `provider`
+- `providerReference`
+- `amount`
+- `currency`
+- `status`
+- `createdAt`
+
+Keep the schema minimal. Do not collect children's full names, phone numbers, precise locations, or other unnecessary personal data.
+
+Use an anonymous demo learner by default.
+
+## 15. BACKEND API
+
+Implement and test these essential routes:
+
+- `GET /api/health`
+- `GET /api/lessons`
+- `GET /api/lessons/fractions`
+- `POST /api/sessions`
+- `POST /api/sessions/:id/events`
+- `POST /api/quiz/submit`
+- `POST /api/tutor/explain`
+- `POST /api/agent/intervene`
+- `GET /api/progress`
+- `GET /api/agent/activity`
+- `GET /api/educator/reviews`
+- `POST /api/educator/reviews/:id/decision`
+- `POST /api/audio/speak`
+- `POST /api/payments/checkout`
+- `GET /api/payments/status/:reference`
+- `POST /api/payments/webhook`
+
+Validate all inputs and return predictable error responses.
+
+Ensure student and session identifiers are validated. Do not trust client-submitted scores or payment success status.
+
+Implement a health endpoint that can be used by Render.
+
+Seed a sample fractions lesson with five quiz questions, alternative explanations, Tamil and English content, and a sample progress history.
+
+## 16. REPRODUCIBLE HACKATHON DEMO
+
+Include a deterministic demo scenario that demonstrates:
+
+1. The student answers a fraction question incorrectly.
+2. The application detects a repeated difficulty.
+3. The tutor offers a different explanation.
+4. The student answers a follow-up question.
+5. The learning dashboard updates.
+6. An educator reviews the flagged intervention.
+7. The Agent Activity panel shows the actual provider execution if connected, or clearly labeled local simulation if not.
+
+The demo must be reproducible during judging.
+
+Clearly distinguish seeded examples from actual user activity. Do not create fake provider logs, fabricated agent runs, or fake payment transactions.
+
+## 17. PRIVACY AND SAFETY
+
+- Never expose API keys or payment credentials to the browser.
+- Avoid unnecessary child data collection.
+- Keep the tutor focused on educational content.
+- Do not diagnose disabilities or make psychological assessments.
+- Avoid shame, pressure, manipulative streaks, or punitive messaging.
+- Provide parent and educator oversight.
+- Validate model-generated output before displaying it.
+- Do not let the AI execute payments or other consequential actions.
+- Do not create fake provider logs or fake transactions.
+- Use safe defaults when external APIs fail.
+- Do not collect a child's personal information unless necessary for a clearly defined feature.
+
+## 18. RENDER DEPLOYMENT
+
+Prepare the project for deployment on Render.
+
+Preferred deployment:
+
+- One Render web service serving the production frontend and Express API.
+- Build the React frontend and serve its static files from Express.
+- Add an `/api/health` endpoint.
+- Provide a correct start command and build command.
+- Bind the Express server to `process.env.PORT` and host `0.0.0.0`.
+- Use production environment variables configured through Render.
+- Use PostgreSQL if `DATABASE_URL` is available.
+- If file-based storage is selected, explain the persistent-disk requirement and configure the storage path accordingly.
+- Add a `render.yaml` Blueprint only if it matches the chosen architecture and can be deployed correctly.
+- Provide a README with Replit instructions and exact Render deployment steps.
+- Explain any required environment variables.
+- Ensure frontend API calls work on the deployed domain.
+- Configure CORS only where needed.
+- Do not depend on Replit's local filesystem for production persistence.
+
+Do not claim that the app is live until deployment has actually succeeded.
+
+## 19. ENVIRONMENT VARIABLES
+
+Create a `.env.example` with placeholders for the required configuration:
+
+```dotenv
+NODE_ENV=development
+DATABASE_URL=
+ELEVENLABS_API_KEY=
+ELEVENLABS_VOICE_ID=
+ELEVENLABS_TAMIL_VOICE_ID=
+ELEVENLABS_MODEL_ID=
+AGENTICORG_API_KEY=
+AGENTICORG_AGENT_ID=
+PINELABS_CLIENT_ID=
+PINELABS_CLIENT_SECRET=
+PINELABS_MERCHANT_ID=
+PINELABS_ENVIRONMENT=sandbox
+APP_BASE_URL=
+```
+
+These are application configuration placeholders, not a guarantee that every provider uses these exact field names. Map them to the actual documented requirements.
+
+Add `.env` to `.gitignore`. Never put real secrets in `.env.example`, source code, logs, or frontend bundles.
+
+## 20. THREE-HOUR EXECUTION PLAN
+
+Prioritize work in this order.
+
+### Phase 1 — First 45 minutes
+- Create the project.
+- Build the ToddleBee-branded landing page and honeybee identity.
+- Implement the lesson and quiz.
+- Make the application runnable immediately.
+
+### Phase 2 — Next 45 minutes
+- Implement answer evaluation.
+- Implement adaptive hints.
+- Save learning events.
+- Build the progress dashboard.
+- Add the educator review flow.
+
+### Phase 3 — Next 40 minutes
+- Integrate ElevenLabs.
+- Integrate AgenticOrg using the actual available SDK/API.
+- Keep the fallback paths functional.
+
+### Phase 4 — Next 25 minutes
+- Add the Pine Labs sandbox payment flow if credentials and documentation are available.
+- Otherwise complete the clearly labeled payment-unavailable state and document the remaining integration step.
+
+### Phase 5 — Final 25 minutes
+- Test the full learner journey.
+- Fix build and runtime errors.
+- Prepare Render deployment.
+- Write the README and demo script.
+
+These are priorities, not guaranteed completion times. If an external integration is blocked, preserve the working core application rather than spending the entire time debugging one provider.
+
+## 21. ACCEPTANCE CRITERIA
+
+The application is ready for demonstration only when:
+
+1. The landing page loads successfully.
+2. ToddleBee branding and the honeybee mascot appear consistently.
+3. No user-facing screen or project branding still says Kuruvi.
+4. The learner can select Tamil or English.
+5. The fractions lesson works without external credentials.
+6. Audio playback works when configured, with a clear fallback otherwise.
+7. The student can complete the quiz.
+8. Incorrect answers trigger useful hints or alternative explanations.
+9. The final result is calculated from trusted answer keys.
+10. Learning insights reflect actual recorded quiz events.
+11. An educator can review and approve a flagged intervention.
+12. Agent activity accurately distinguishes real AgenticOrg runs from local demo events.
+13. Payment status accurately distinguishes verified sandbox transactions from demo states.
+14. The application can be built and run on Replit.
+15. The project is prepared for Render deployment.
+16. No secrets are committed to source control.
+17. The README explains setup, configuration, integrations, fallbacks, testing, and deployment.
+18. The UI is responsive, accessible, polished, and appropriate for children aged 8–12.
+
+## 22. START IMPLEMENTATION NOW
+
+First inspect the environment, create the smallest viable project, and implement the end-to-end lesson journey.
+
+Use **ToddleBee** as the product name everywhere and the **honeybee** as the primary brand icon.
+
+Run the application, inspect any errors, and fix them. Do not stop after creating a design mockup or merely describe the files you intend to create.
+
+Deliver the working product first, then integrate external providers where credentials and time allow. Be transparent about anything that remains in demo or simulation mode.

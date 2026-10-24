@@ -1,45 +1,29 @@
-# [Project name]
+# ToddleBee
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+ToddleBee is a bilingual learning companion prototype with a Grade 4 fractions lesson, checked practice, learner progress, parent guidance, and a demo-only educator review queue.
 
-## Run & Operate
+## Run & operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Replit runs the web and API workflows separately.
+- `pnpm run typecheck` — typecheck the workspace.
+- `pnpm --filter @workspace/api-spec run codegen` — regenerate API clients and validators from the OpenAPI source.
+- `pnpm --filter @workspace/db run push` — apply schema changes to the development database only.
+- Required runtime environment: `DATABASE_URL`.
+- See `README.md` for the Replit workflow, demo steps, provider status, and Render instructions.
 
-## Stack
+## Source of truth
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- API contract: `lib/api-spec/openapi.yaml`
+- Database schema: `lib/db/src/schema/toddlebee.ts`
+- API routes: `artifacts/api-server/src/routes/`
+- Bilingual lesson and quiz content: `artifacts/api-server/src/lib/toddlebee-content.ts`
+- Web app: `artifacts/toddlebee/src/App.tsx`
 
-## Where things live
+## Architecture and demo constraints
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
-
-## Architecture decisions
-
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
-
-## Product
-
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- The frontend and API are separate Replit artifacts; the API can also serve the production Vite build from a single Render web service.
+- Answer keys stay on the server. The browser submits selected option IDs, not scores.
+- Learning sessions are anonymous and use random IDs stored in the browser. Progress requests are scoped to those IDs.
+- ElevenLabs uses the existing Replit connection on Replit; external hosting can use server-only environment variables.
+- AgenticOrg is represented only by a labelled local simulation. Pine Labs checkout remains unavailable. Neither fallback may be presented as a real provider operation.
+- The educator demo gate is not production authentication. Add real access control, consent, and retention controls before using real child data.

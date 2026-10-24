@@ -1,0 +1,521 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* LIGHT MODE */
+:root {
+  --button-outline: rgba(0, 0, 0, 0.1);
+  --badge-outline: rgba(0, 0, 0, 0.05);
+
+  /* Automatic computation of border around primary / danger buttons */
+  --opaque-button-border-intensity: -8; /* In terms of percentages */
+
+  /* Backgrounds applied on top of other backgrounds when hovered/active */
+  --elevate-1: rgba(0, 0, 0, 0.03);
+  --elevate-2: rgba(0, 0, 0, 0.08);
+
+  --background: 42 100% 96%;
+
+  --foreground: 213 67% 19%;
+
+  --border: 41 45% 86%;
+
+  --card: 0 0% 100%;
+
+  --card-foreground: 213 67% 19%;
+
+  --card-border: 41 45% 86%;
+
+  --sidebar: 42 100% 96%;
+
+  --sidebar-foreground: 213 67% 19%;
+
+  --sidebar-border: 41 45% 86%;
+
+  --sidebar-primary: 44 100% 57%;
+
+  --sidebar-primary-foreground: 213 67% 19%;
+
+  --sidebar-accent: 199 100% 87%;
+
+  --sidebar-accent-foreground: 213 67% 19%;
+
+  --sidebar-ring: 44 100% 57%;
+
+  --popover: 0 0% 100%;
+
+  --popover-foreground: 213 67% 19%;
+
+  --popover-border: 41 45% 86%;
+
+  --primary: 44 100% 57%;
+
+  --primary-foreground: 213 67% 19%;
+
+  --secondary: 199 100% 87%;
+
+  --secondary-foreground: 213 67% 19%;
+
+  --muted: 42 50% 92%;
+
+  --muted-foreground: 211 20% 40%;
+
+  --accent: 143 45% 62%;
+
+  --accent-foreground: 213 67% 19%;
+
+  --destructive: 11 100% 74%;
+
+  --destructive-foreground: 213 67% 19%;
+
+  --input: 41 45% 86%;
+  --ring: 44 100% 57%;
+  --chart-1: 44 100% 57%;
+  --chart-2: 199 100% 87%;
+  --chart-3: 143 45% 62%;
+  --chart-4: 11 100% 74%;
+  --chart-5: 213 67% 36%;
+
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-serif: 'Nunito', sans-serif;
+  --app-font-mono: 'DM Sans', monospace;
+  --radius: 1rem;
+  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
+  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
+  --shadow-sm:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-md:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-lg:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-xl:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* Automatically computed borders - intensity can be controlled by the user by the --opaque-button-border-intensity setting */
+
+  /* Fallback for older browsers */
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(
+    from hsl(var(--sidebar-primary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+
+  /* Fallback for older browsers */
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(
+    from hsl(var(--sidebar-accent)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+
+  /* Fallback for older browsers */
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(
+    from hsl(var(--primary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+
+  /* Fallback for older browsers */
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(
+    from hsl(var(--secondary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+
+  /* Fallback for older browsers */
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(
+    from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) /
+      alpha
+  );
+
+  /* Fallback for older browsers */
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(
+    from hsl(var(--accent)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+
+  /* Fallback for older browsers */
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(
+    from hsl(var(--destructive)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+}
+
+.dark {
+  --button-outline: rgba(255, 255, 255, 0.1);
+  --badge-outline: rgba(255, 255, 255, 0.05);
+
+  --opaque-button-border-intensity: 9; /* In terms of percentages */
+
+  /* Backgrounds applied on top of other backgrounds when hovered/active */
+  --elevate-1: rgba(255, 255, 255, 0.04);
+  --elevate-2: rgba(255, 255, 255, 0.09);
+
+  --background: 213 67% 19%;
+
+  --foreground: 42 100% 96%;
+
+  --border: 213 38% 34%;
+
+  --card: 213 52% 24%;
+
+  --card-foreground: 42 100% 96%;
+
+  --card-border: 213 38% 34%;
+
+  --sidebar: 213 67% 19%;
+
+  --sidebar-foreground: 42 100% 96%;
+
+  --sidebar-border: 213 38% 34%;
+
+  --sidebar-primary: 44 100% 57%;
+
+  --sidebar-primary-foreground: 213 67% 19%;
+
+  --sidebar-accent: 213 52% 30%;
+
+  --sidebar-accent-foreground: 42 100% 96%;
+
+  --sidebar-ring: 44 100% 57%;
+
+  --popover: 213 52% 24%;
+
+  --popover-foreground: 42 100% 96%;
+
+  --popover-border: 213 38% 34%;
+
+  --primary: 44 100% 57%;
+
+  --primary-foreground: 213 67% 19%;
+
+  --secondary: 199 75% 68%;
+
+  --secondary-foreground: 213 67% 19%;
+
+  --muted: 213 52% 30%;
+
+  --muted-foreground: 212 25% 77%;
+
+  --accent: 143 45% 62%;
+
+  --accent-foreground: 213 67% 19%;
+
+  --destructive: 11 100% 74%;
+
+  --destructive-foreground: 213 67% 19%;
+
+  /* Used as the border around inputs. Dark mode: Should be a border that is light enough to have high contrast when rendered on a --card background. More contrast than standard --border */
+  --input: 213 38% 34%;
+  --ring: 44 100% 57%;
+  --chart-1: 44 100% 57%;
+  --chart-2: 199 100% 87%;
+  --chart-3: 143 45% 62%;
+  --chart-4: 11 100% 74%;
+  --chart-5: 42 100% 96%;
+
+  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-sm:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-md:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-lg:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-xl:
+    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+    0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/**
+ * Using the elevate system.
+ * Automatic contrast adjustment.
+ *
+ * <element className="hover-elevate" />
+ * <element className="active-elevate-2" />
+ *
+ * // Using the tailwind utility when a data attribute is "on"
+ * <element className="toggle-elevate data-[state=on]:toggle-elevated" />
+ * // Or manually controlling the toggle state
+ * <element className="toggle-elevate toggle-elevated" />
+ *
+ * Elevation systems have to handle many states.
+ * - not-hovered, vs. hovered vs. active  (three mutually exclusive states)
+ * - toggled or not
+ * - focused or not (this is not handled with these utilities)
+ *
+ * Even without handling focused or not, this is six possible combinations that
+ * need to be distinguished from eachother visually.
+ */
+@layer utilities {
+  /* Hide ugly search cancel button in Chrome until we can style it properly */
+  input[type='search']::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  /* Placeholder styling for contentEditable div */
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
+   * buttons/badges can remove the automatic brightness adjustment on interactions
+   * and program their own. */
+  .no-default-hover-elevate {
+  }
+
+  .no-default-active-elevate {
+  }
+
+  /**
+   * Toggleable backgrounds go behind the content. Hoverable/active goes on top.
+   * This way they can stack/compound. Both will overlap the parent's borders!
+   * So borders will be automatically adjusted both on toggle, and hover/active,
+   * and they will be compounded.
+   */
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    /*border-radius: inherit;   match rounded corners */
+    border-radius: inherit;
+    z-index: -1;
+    /* sits behind content but above backdrop */
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  /* Does not work on elements with overflow:hidden! */
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    /*border-radius: inherit;   match rounded corners */
+    border-radius: inherit;
+    z-index: 999;
+    /* sits in front of content */
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+}
+
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff9ec; color: #102b50; font-family: 'DM Sans', sans-serif; }
+button, input, select { font: inherit; }
+button, a, select { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid #102b50; outline-offset: 3px; }
+.font-display { font-family: 'Nunito', sans-serif; }
+.bee-mark { width: 38px; height: 38px; flex: 0 0 auto; }
+.app-shell { min-height: 100dvh; background: #fff9ec; }
+.topbar { height: 76px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(18px,5vw,76px); border-bottom:1px solid #f0e7d5; background:rgba(255,249,236,.94); position:sticky; top:0; z-index:20; backdrop-filter:blur(14px); }
+.brand { display:flex; align-items:center; gap:10px; color:#102b50; text-decoration:none; font:900 23px 'Nunito',sans-serif; letter-spacing:-.7px; }
+.top-links { display:flex; align-items:center; gap:8px; }
+.nav-link { color:#53657b; text-decoration:none; font-weight:700; padding:10px 14px; border-radius:999px; font-size:14px; }
+.nav-link:hover,.nav-link.active { background:#fff0c5; color:#102b50; }
+.lang-switch { display:flex; gap:3px; border:1px solid #e9dfce; border-radius:999px; padding:4px; background:#fff; }
+.lang-switch button { border:0; color:#53657b; background:transparent; border-radius:999px; min-width:46px; min-height:35px; padding:0 10px; font-size:13px; font-weight:800; cursor:pointer; }
+.lang-switch button[aria-pressed="true"] { background:#102b50; color:#fff; }
+.page { width:min(1160px, calc(100% - 40px)); margin:0 auto; padding:46px 0 88px; }
+.eyebrow { color:#9b6b00; text-transform:uppercase; letter-spacing:1.4px; font-size:12px; font-weight:900; }
+.hero { min-height:520px; display:grid; grid-template-columns:1fr .94fr; gap:44px; align-items:center; padding:38px 0 58px; }
+.hero h1 { font:900 clamp(48px,6.5vw,82px)/.99 'Nunito',sans-serif; letter-spacing:-3px; margin:16px 0 18px; max-width:620px; }
+.hero h1 span { color:#d89100; }
+.hero p { color:#53657b; font-size:18px; line-height:1.65; max-width:520px; margin:0 0 28px; }
+.hero-art { min-height:410px; border-radius:48% 42% 40% 48%; background:#ffbf24; position:relative; display:grid; place-items:center; overflow:hidden; }
+.hero-art:before,.hero-art:after { content:""; position:absolute; border:2px solid rgba(16,43,80,.1); border-radius:50%; width:360px;height:360px; }
+.hero-art:after { width:470px;height:470px; }
+.sun-disc { width:230px;height:230px; background:#fff9ec; border-radius:50%; position:absolute; transform:translate(35px,-12px); }
+.bee-illustration { position:relative; z-index:1; width:215px; height:172px; animation:bee-float 4s ease-in-out infinite; }
+.bee-body { position:absolute; left:39px; top:39px; width:137px; height:95px; border:5px solid #102b50; border-radius:52% 48% 48% 52%; background:repeating-linear-gradient(90deg,#ffbf24 0 33px,#102b50 33px 52px); overflow:hidden; }
+.bee-body:after { content:""; position:absolute; inset:0 0 0 97px; background:#ffbf24; }
+.bee-wing { position:absolute; width:63px;height:66px; border:4px solid #102b50; background:#bde7ff; border-radius:60% 50% 60% 50%; top:6px; }
+.bee-wing.one { left:55px; transform:rotate(-25deg); }.bee-wing.two { left:103px; transform:rotate(25deg); }
+.bee-eye { position:absolute; z-index:2; right:37px;top:65px;width:9px;height:9px;background:#102b50;border-radius:50%; }
+.bee-smile { position:absolute; right:18px;top:75px;width:17px;height:9px;border-bottom:3px solid #102b50;border-radius:50%;z-index:2; }
+.bee-antenna { position:absolute; right:37px; top:31px; width:24px;height:24px;border-top:4px solid #102b50;border-right:4px solid #102b50;border-radius:0 90% 0 0;transform:rotate(-15deg);z-index:2; }
+.bee-antenna:after { content:"";position:absolute;right:-8px;top:-11px;width:10px;height:10px;border-radius:50%;background:#ff9278; }
+.spark { position:absolute; color:#fff9ec;font:900 28px 'Nunito'; }.spark.s1{top:70px;left:58px}.spark.s2{right:60px;bottom:78px;font-size:19px}
+.hero-note { position:absolute; bottom:32px; left:30px; background:white; padding:11px 16px; border-radius:16px; font-size:13px; font-weight:800; box-shadow:0 8px 20px #a77a2733; }
+.btn { border:0; display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:52px; padding:0 22px; border-radius:16px; background:#ffbf24; color:#102b50; font-weight:900; text-decoration:none; cursor:pointer; transition:transform .18s, background .18s; }
+.btn:hover { transform:translateY(-2px); background:#ffc93f; }.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-secondary { background:#fff; border:1px solid #e9dfce; }.btn-navy{background:#102b50;color:white}.btn-small{min-height:42px;padding:0 16px;border-radius:13px;font-size:14px}
+.section-heading { display:flex; justify-content:space-between; gap:20px; align-items:end; margin:0 0 22px; }
+.section-heading h2,.page h1 { font:900 clamp(30px,4vw,46px)/1.1 'Nunito',sans-serif; margin:8px 0; letter-spacing:-1.2px; }
+.section-heading p { margin:0; color:#53657b; line-height:1.6; }
+.setup-panel { background:#fff; border:1px solid #efe5d2; border-radius:28px; padding:28px; box-shadow:0 12px 30px #72541b0c; }
+.setup-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0; }
+.field label { display:block; font-size:13px;font-weight:900;margin:0 0 8px; }
+.field select { width:100%; min-height:50px; border:1px solid #e7ddca; border-radius:13px; background:#fffdf8; color:#102b50;padding:0 14px; }
+.pill-row { display:flex;flex-wrap:wrap;gap:9px; }.choice-pill { border:1px solid #e8decc;border-radius:999px;background:#fff;padding:11px 17px;font-weight:800;color:#53657b;cursor:pointer; }.choice-pill.selected{background:#fff0c5;border-color:#ffbf24;color:#102b50}
+.feature-band { display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:28px; }
+.feature-tile { padding:23px; border-radius:22px; background:#fff; border:1px solid #f0e7d5; min-height:158px; }
+.feature-tile:nth-child(2){background:#e9f7ff}.feature-tile:nth-child(3){background:#eaf7ef}
+.feature-icon { width:42px;height:42px;border-radius:14px;background:#ffedb9;display:grid;place-items:center;font:900 17px 'Nunito';margin-bottom:14px;color:#102b50}
+.feature-tile h3{margin:0 0 6px;font:900 17px 'Nunito'}.feature-tile p{color:#53657b;font-size:14px;line-height:1.55;margin:0}
+.notice { padding:14px 16px; border-radius:14px; background:#fff3d3; color:#674b11; font-size:14px; line-height:1.55; }
+.status-error{background:#fff0ed;color:#8e3927}.status-success{background:#eaf7ef;color:#245d3e}
+.lesson-layout{display:grid;grid-template-columns:260px 1fr;gap:25px;align-items:start}
+.lesson-side,.content-card{background:#fff;border:1px solid #efe5d2;border-radius:24px;padding:23px}
+.lesson-side{position:sticky;top:98px}
+.lesson-side h3{font:900 18px 'Nunito';margin:0 0 15px}
+.lesson-step{width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:0;background:transparent;padding:12px 9px;border-radius:13px;color:#53657b;font-weight:800;cursor:pointer}
+.lesson-step:hover,.lesson-step.selected{background:#fff4d7;color:#102b50}.step-dot{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#f2eee5;font-size:12px;flex:none}.selected .step-dot{background:#ffbf24}
+.progress-track{height:9px;background:#f1eadc;border-radius:999px;overflow:hidden;margin:16px 0 7px}.progress-track span{height:100%;display:block;background:#75c99b;border-radius:inherit;transition:width .25s}
+.content-card{padding:clamp(22px,4vw,42px);min-height:450px}
+.content-card h2{font:900 clamp(28px,4vw,40px)/1.1 'Nunito';margin:0 0 14px;letter-spacing:-.8px}.content-card p{font-size:17px;line-height:1.75;color:#53657b}.lesson-visual{margin:24px 0;background:#fff8e7;border-radius:22px;padding:24px;text-align:center}
+.fraction-bars{display:flex;justify-content:center;gap:7px;margin:18px auto}.fraction-bars span{width:48px;height:55px;border:2px solid #102b50;border-radius:12px;background:#fff}.fraction-bars span.filled{background:#ffbf24}
+.lesson-visual svg{display:block;margin:15px auto 10px;max-width:100%;height:auto}.lesson-visual strong{display:block;margin-top:5px}
+.content-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.quiz-card{max-width:780px;margin:0 auto;background:#fff;border:1px solid #efe5d2;border-radius:28px;padding:clamp(24px,5vw,52px)}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;color:#53657b;font-weight:800;font-size:14px}.question{font:900 clamp(25px,4vw,36px)/1.2 'Nunito';margin:24px 0}
+.answers{display:grid;gap:11px}.answer-option{width:100%;min-height:62px;border:1px solid #e8decc;border-radius:16px;background:#fffdf8;padding:12px 17px;text-align:left;font-weight:800;color:#102b50;cursor:pointer;display:flex;align-items:center;gap:12px}.answer-option:hover,.answer-option.chosen{border-color:#e8ad12;background:#fff7df}.answer-option:disabled{cursor:default}
+.answer-letter{width:30px;height:30px;border-radius:10px;background:#f3ecdd;display:grid;place-items:center}
+.feedback-box{padding:16px;border-radius:16px;margin-top:18px;line-height:1.6;font-weight:700}.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.dashboard-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:17px}.stat-card,.panel{background:#fff;border:1px solid #efe5d2;border-radius:23px;padding:24px}.stat-card{min-height:145px}.stat-label{color:#53657b;font-weight:800;font-size:14px}.stat-value{font:900 42px 'Nunito';margin:8px 0}.panel h2,.panel h3{font:900 20px 'Nunito';margin:0 0 14px}.concept-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 0;border-bottom:1px solid #f1eadc}.concept-row:last-child{border:0}.tag{border-radius:999px;background:#eaf7ef;color:#245d3e;font-size:12px;font-weight:900;padding:7px 10px}.tag.practice{background:#fff2ce;color:#755414}
+.bar-chart{height:150px;display:flex;align-items:end;gap:14px;padding:15px 8px 0}.bar-col{height:100%;display:flex;flex:1;flex-direction:column;justify-content:end;align-items:center;gap:8px;font-size:11px;color:#53657b}.bar{width:min(45px,100%);background:#bde7ff;border-radius:10px 10px 4px 4px}.bar.current{background:#ffbf24}
+.guidance-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.guidance-card{border-radius:24px;padding:27px;background:#fff;border:1px solid #efe5d2}.guidance-card.tint{background:#e9f7ff}.guidance-card h2{font:900 23px 'Nunito'}.guidance-card p,.guidance-card li{color:#53657b;line-height:1.7}.guidance-card ul{padding-left:20px}
+.queue-card{background:white;border:1px solid #efe5d2;border-radius:20px;padding:22px;margin-top:14px}.queue-card p{color:#53657b;line-height:1.6}.queue-actions{display:flex;flex-wrap:wrap;gap:9px}
+.plan-card{max-width:760px;margin:0 auto;background:#fff;border:1px solid #efe5d2;border-radius:28px;padding:35px}.price{font:900 44px 'Nunito';margin:15px 0}.unavailable{padding:17px;background:#fff2e9;border-radius:16px;color:#7a4a30;line-height:1.6}
+.pricing-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;margin-top:24px;align-items:stretch}.pricing-grid .plan-card{width:100%;max-width:none;margin:0}.plan-card ul{color:#53657b;line-height:1.8;padding-left:21px;margin:20px 0 24px}.plan-card li{padding-left:3px;margin:5px 0}.pricing-grid .plan-card:last-child{background:#fffdf7}
+.skeleton{height:22px;border-radius:10px;background:linear-gradient(90deg,#f3ead9,#fff7e8,#f3ead9);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.footer{padding:25px 20px;text-align:center;color:#728093;font-size:13px;border-top:1px solid #f0e7d5}
+.mobile-nav{display:none}
+@keyframes bee-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}
+@keyframes shimmer{to{background-position:-200% 0}}
+@media(max-width:780px){.topbar{height:66px;padding:0 16px}.top-links .nav-link{display:none}.page{width:min(100% - 28px,620px);padding:28px 0 90px}.hero{grid-template-columns:1fr;gap:22px;padding:20px 0 32px;min-height:auto}.hero h1{font-size:clamp(48px,13vw,68px)}.hero-art{min-height:300px}.setup-grid,.feature-band,.pricing-grid{grid-template-columns:1fr}.lesson-layout{grid-template-columns:1fr}.lesson-side{position:static}.lesson-side .step-list{display:grid;grid-template-columns:1fr 1fr}.content-card{min-height:0}.dashboard-grid,.guidance-grid{grid-template-columns:1fr}.mobile-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#fff;border-top:1px solid #e9dfce;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:25}.mobile-nav a{font-size:11px;text-decoration:none;color:#53657b;font-weight:800;display:grid;justify-items:center;gap:4px;min-width:54px}.mobile-nav a.active{color:#9b6b00}.mobile-nav span{font-size:18px}.section-heading{align-items:start;flex-direction:column}.quiz-footer{align-items:stretch;flex-direction:column-reverse}.quiz-footer .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}

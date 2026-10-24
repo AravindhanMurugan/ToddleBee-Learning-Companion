@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ToddleBee"
+description = "A bilingual AI learning companion for children aged 8–12. Students learn Grade 4 fractions in English or Tamil, listen to explanations, practice with supportive feedback, and track learning progress."
+version = "1.0.0"
+id = "artifacts/toddlebee"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25779
+
+[services.development]
+run = "pnpm --filter @workspace/toddlebee run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/toddlebee", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/toddlebee/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25779"
+BASE_PATH = "/"

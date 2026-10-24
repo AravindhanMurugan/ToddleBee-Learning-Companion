@@ -3,20 +3,24 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API for ToddleBee's bilingual learning companion
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: learning
+  - name: quiz
+  - name: progress
+  - name: educator
+  - name: audio
+  - name: payments
 paths:
-  /healthz:
+  /health:
     get:
-      operationId: healthCheck
+      operationId: apiHealth
       tags: [health]
-      summary: Health check
-      description: Returns server health status
+      summary: API health check for hosting platforms
       responses:
         "200":
           description: Healthy
@@ -24,13 +28,598 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Check API health
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /lessons:
+    get:
+      operationId: listLessons
+      tags: [learning]
+      summary: List available lessons
+      responses:
+        "200":
+          description: Lesson catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LessonSummary"
+  /lessons/fractions:
+    get:
+      operationId: getFractionsLesson
+      tags: [learning]
+      summary: Get the bilingual fractions lesson
+      parameters:
+        - name: language
+          in: query
+          required: true
+          schema: { type: string, enum: [en, ta] }
+      responses:
+        "200":
+          description: Fractions lesson content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lesson"
+  /sessions:
+    post:
+      operationId: createLearningSession
+      tags: [learning]
+      summary: Start a learner session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LearningSessionInput"
+      responses:
+        "201":
+          description: Session started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LearningSession"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /sessions/{id}/events:
+    post:
+      operationId: recordLearningEvent
+      tags: [learning]
+      summary: Record section completion or learning activity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, minLength: 8, maxLength: 80 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LearningEventInput"
+      responses:
+        "201":
+          description: Activity recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LearningEvent"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /quiz/submit:
+    post:
+      operationId: submitQuizAnswer
+      tags: [quiz]
+      summary: Submit one answer for server-side evaluation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizAnswerInput"
+      responses:
+        "200":
+          description: Evaluated answer and supportive next step
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAnswerResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /quiz/questions:
+    get:
+      operationId: listQuizQuestions
+      tags: [quiz]
+      summary: Get the assessment questions without answer keys
+      parameters:
+        - name: language
+          in: query
+          required: true
+          schema: { type: string, enum: [en, ta] }
+      responses:
+        "200":
+          description: Five translated questions and multiple-choice options
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/QuizQuestion" }
+  /tutor/explain:
+    post:
+      operationId: explainConcept
+      tags: [learning]
+      summary: Get a curated alternative explanation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExplainInput"
+      responses:
+        "200":
+          description: Child-friendly explanation in the selected language
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExplainResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /agent/intervene:
+    post:
+      operationId: requestIntervention
+      tags: [learning]
+      summary: Review current session patterns and suggest support
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterventionInput"
+      responses:
+        "200":
+          description: Local demo intervention
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Intervention"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /progress:
+    get:
+      operationId: getLearningProgress
+      tags: [progress]
+      summary: Get progress for the anonymous learner's own sessions
+      parameters:
+        - name: sessionIds
+          in: query
+          required: false
+          description: Comma-separated random session IDs stored by the learner's browser
+          schema: { type: string, maxLength: 800 }
+      responses:
+        "200":
+          description: Progress summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+  /agent/activity:
+    get:
+      operationId: getAgentActivity
+      tags: [progress]
+      summary: Get transparent local or provider agent activity
+      responses:
+        "200":
+          description: Recent agent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgentActivity"
+  /educator/reviews:
+    get:
+      operationId: listEducatorReviews
+      tags: [educator]
+      summary: List educator review items
+      responses:
+        "200":
+          description: Human review queue
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EducatorReview"
+  /educator/reviews/{id}/decision:
+    post:
+      operationId: decideEducatorReview
+      tags: [educator]
+      summary: Record an educator decision
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, minLength: 8, maxLength: 80 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EducatorDecisionInput"
+      responses:
+        "200":
+          description: Decision recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EducatorReview"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /audio/voices:
+    get:
+      operationId: listNarrationVoices
+      tags: [audio]
+      summary: Get available connected narration voices
+      responses:
+        "200":
+          description: Voice availability and child-friendly voice options
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoiceCatalog"
+  /audio/speak:
+    post:
+      operationId: speakExplanation
+      tags: [audio]
+      summary: Generate a short narration clip with ElevenLabs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SpeakInput"
+      responses:
+        "200":
+          description: Browser-playable narration audio
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "503":
+          description: ElevenLabs is not configured or available
+  /payments/checkout:
+    post:
+      operationId: createDemoCheckout
+      tags: [payments]
+      summary: Check whether Pine Labs checkout is available
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutInput"
+      responses:
+        "200":
+          description: Clearly labelled provider availability status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+  /payments/status/{reference}:
+    get:
+      operationId: getPaymentStatus
+      tags: [payments]
+      summary: Get verified payment status
+      parameters:
+        - name: reference
+          in: path
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 120 }
+      responses:
+        "200":
+          description: Payment status, never inferred from browser actions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+  /payments/webhook:
+    post:
+      operationId: receivePaymentWebhook
+      tags: [payments]
+      summary: Reject unverified webhook events until Pine Labs is configured
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentWebhookInput"
+      responses:
+        "503":
+          description: Pine Labs sandbox is unavailable
 components:
+  responses:
+    BadRequest:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
   schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
     HealthStatus:
       type: object
+      required: [status]
       properties:
-        status:
+        status: { type: string }
+    LessonSummary:
+      type: object
+      required: [id, title, grade, subject, durationMinutes]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        grade: { type: integer }
+        subject: { type: string }
+        durationMinutes: { type: integer }
+    LessonSection:
+      type: object
+      required: [id, title, explanation, alternative, visual, order]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        explanation: { type: string }
+        alternative: { type: string }
+        visual: { type: string }
+        order: { type: integer }
+    Lesson:
+      type: object
+      required: [id, title, grade, subject, sections]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        grade: { type: integer }
+        subject: { type: string }
+        sections:
+          type: array
+          items: { $ref: "#/components/schemas/LessonSection" }
+    LearningSessionInput:
+      type: object
+      required: [language, grade, age]
+      properties:
+        language: { type: string, enum: [en, ta] }
+        grade: { type: integer, minimum: 4, maximum: 4 }
+        age: { type: integer, minimum: 8, maximum: 12 }
+    LearningSession:
+      type: object
+      required: [id, language, grade, age, startedAt, completedSections, isSample]
+      properties:
+        id: { type: string }
+        language: { type: string, enum: [en, ta] }
+        grade: { type: integer }
+        age: { type: integer }
+        startedAt: { type: string, format: date-time }
+        completedAt: { type: ["string", "null"], format: date-time }
+        completedSections:
+          type: array
+          items: { type: string }
+        isSample: { type: boolean }
+    LearningEventInput:
+      type: object
+      required: [type]
+      properties:
+        type:
           type: string
-      required:
-        - status
-
+          enum: [section_completed, alternative_explanation, lesson_completed, hint_used, language_changed]
+        sectionId: { type: string }
+        language: { type: string, enum: [en, ta] }
+    LearningEvent:
+      type: object
+      required: [id, sessionId, type, createdAt]
+      properties:
+        id: { type: string }
+        sessionId: { type: string }
+        type: { type: string }
+        sectionId: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+    QuizAnswerInput:
+      type: object
+      required: [sessionId, questionId, selectedAnswerId]
+      properties:
+        sessionId: { type: string, minLength: 8, maxLength: 80 }
+        questionId: { type: string }
+        selectedAnswerId: { type: string }
+        hintUsed: { type: boolean }
+        responseTimeMs: { type: integer, minimum: 0, maximum: 3600000 }
+    QuizQuestion:
+      type: object
+      required: [id, concept, prompt, options, order]
+      properties:
+        id: { type: string }
+        concept: { type: string }
+        prompt: { type: string }
+        options:
+          type: array
+          items: { $ref: "#/components/schemas/QuizOption" }
+        order: { type: integer }
+    QuizOption:
+      type: object
+      required: [id, text]
+      properties:
+        id: { type: string }
+        text: { type: string }
+    QuizAnswerResult:
+      type: object
+      required: [isCorrect, attemptNumber, hintUsed, feedback, nextAction, repeatedDifficulty]
+      properties:
+        isCorrect: { type: boolean }
+        attemptNumber: { type: integer }
+        hintUsed: { type: boolean }
+        feedback: { type: string }
+        hint: { type: ["string", "null"] }
+        nextAction: { type: string, enum: [retry, next_question, try_visual, educator_review] }
+        repeatedDifficulty: { type: boolean }
+    ExplainInput:
+      type: object
+      required: [sessionId, sectionId, language]
+      properties:
+        sessionId: { type: string, minLength: 8, maxLength: 80 }
+        sectionId: { type: string }
+        language: { type: string, enum: [en, ta] }
+    ExplainResult:
+      type: object
+      required: [explanation, mode]
+      properties:
+        explanation: { type: string }
+        mode: { type: string, enum: [curated, ai] }
+    InterventionInput:
+      type: object
+      required: [sessionId]
+      properties:
+        sessionId: { type: string, minLength: 8, maxLength: 80 }
+    Intervention:
+      type: object
+      required: [concept, observedPattern, confidence, teachingStrategy, explanation, nextAction, needsHumanReview, providerMode]
+      properties:
+        concept: { type: string }
+        observedPattern: { type: string }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        teachingStrategy: { type: string }
+        explanation: { type: string }
+        nextAction: { type: string }
+        needsHumanReview: { type: boolean }
+        providerMode: { type: string, enum: [local_demo] }
+    Progress:
+      type: object
+      required: [lessonsStarted, lessonsCompleted, questionsAttempted, firstAttemptAccuracy, finalAccuracy, hintsUsed, concepts, recentSessions, isSampleData]
+      properties:
+        lessonsStarted: { type: integer }
+        lessonsCompleted: { type: integer }
+        questionsAttempted: { type: integer }
+        firstAttemptAccuracy: { type: number }
+        finalAccuracy: { type: number }
+        hintsUsed: { type: integer }
+        learningMinutes: { type: integer }
+        isSampleData: { type: boolean }
+        concepts:
+          type: array
+          items: { $ref: "#/components/schemas/ConceptProgress" }
+        recentSessions:
+          type: array
+          items: { $ref: "#/components/schemas/RecentSession" }
+    ConceptProgress:
+      type: object
+      required: [concept, status, attempts]
+      properties:
+        concept: { type: string }
+        status: { type: string, enum: [understood, improving, needs_practice] }
+        attempts: { type: integer }
+    RecentSession:
+      type: object
+      required: [id, lessonTitle, startedAt, isSample]
+      properties:
+        id: { type: string }
+        lessonTitle: { type: string }
+        startedAt: { type: string, format: date-time }
+        isSample: { type: boolean }
+    AgentActivity:
+      type: object
+      required: [id, provider, status, summary, createdAt, needsHumanReview]
+      properties:
+        id: { type: string }
+        provider: { type: string, enum: [local_demo, agenticorg] }
+        externalRunId: { type: ["string", "null"] }
+        status: { type: string }
+        summary: { type: string }
+        createdAt: { type: string, format: date-time }
+        needsHumanReview: { type: boolean }
+    EducatorReview:
+      type: object
+      required: [id, concept, attemptSummary, proposedExplanation, reason, status, createdAt, isSample]
+      properties:
+        id: { type: string }
+        concept: { type: string }
+        attemptSummary: { type: string }
+        proposedExplanation: { type: string }
+        approvedExplanation: { type: ["string", "null"] }
+        reason: { type: string }
+        status: { type: string, enum: [pending, approved, edited, rejected] }
+        createdAt: { type: string, format: date-time }
+        reviewedAt: { type: ["string", "null"], format: date-time }
+        isSample: { type: boolean }
+    EducatorDecisionInput:
+      type: object
+      required: [decision]
+      properties:
+        decision: { type: string, enum: [approve, edit, reject] }
+        explanation: { type: string, maxLength: 1000 }
+    VoiceCatalog:
+      type: object
+      required: [available, provider, voices, message]
+      properties:
+        available: { type: boolean }
+        provider: { type: string, enum: [elevenlabs, browser_fallback] }
+        voices:
+          type: array
+          items: { $ref: "#/components/schemas/VoiceOption" }
+        message: { type: string }
+    VoiceOption:
+      type: object
+      required: [id, name, language, childFriendly]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        language: { type: string }
+        childFriendly: { type: boolean }
+    SpeakInput:
+      type: object
+      required: [text, language]
+      properties:
+        text: { type: string, minLength: 1, maxLength: 1800 }
+        language: { type: string, enum: [en, ta] }
+        voiceId: { type: string, maxLength: 120 }
+    CheckoutInput:
+      type: object
+      required: [plan]
+      properties:
+        plan: { type: string, enum: [plus_monthly, practice_pack] }
+    PaymentStatus:
+      type: object
+      required: [providerAvailable, status, message, reference]
+      properties:
+        providerAvailable: { type: boolean }
+        status: { type: string, enum: [unavailable, pending, succeeded, failed, cancelled] }
+        message: { type: string }
+        reference: { type: ["string", "null"] }
+    PaymentWebhookInput:
+      type: object
+      properties:
+        event: { type: string, maxLength: 100 }
+        reference: { type: string, maxLength: 120 }
