@@ -162,7 +162,7 @@ paths:
     post:
       operationId: explainConcept
       tags: [learning]
-      summary: Get a curated alternative explanation
+      summary: Get an AgenticOrg or curated alternative explanation
       requestBody:
         required: true
         content:
@@ -498,7 +498,7 @@ components:
       required: [explanation, mode]
       properties:
         explanation: { type: string }
-        mode: { type: string, enum: [curated, ai] }
+        mode: { type: string, enum: [curated, agenticorg] }
     InterventionInput:
       type: object
       required: [sessionId]

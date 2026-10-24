@@ -34,6 +34,7 @@ import {
   getQuizQuestions,
   type Language,
 } from "../lib/toddlebee-content";
+import { requestAgenticOrgExplanation } from "../lib/agenticorg";
 
 const router: IRouter = Router();
 
@@ -353,14 +354,40 @@ router.post("/tutor/explain", async (req, res): Promise<void> => {
     )
     .orderBy(desc(educatorReviewsTable.reviewedAt))
     .limit(1);
-  const explanation = approvedReview?.approvedExplanation ?? curatedExplanation;
+  const agenticOrgResult = approvedReview?.approvedExplanation
+    ? null
+    : await requestAgenticOrgExplanation({
+        language: body.data.language as Language,
+        sectionId: body.data.sectionId,
+        referenceExplanation: curatedExplanation,
+      });
+  if (
+    agenticOrgResult &&
+    !agenticOrgResult.ok &&
+    agenticOrgResult.reason !== "missing_api_key"
+  ) {
+    req.log.warn(
+      {
+        provider: "agenticorg",
+        reason: agenticOrgResult.reason,
+        status: agenticOrgResult.status,
+      },
+      "AgenticOrg explanation unavailable; using curated fallback",
+    );
+  }
+  const explanation =
+    approvedReview?.approvedExplanation ??
+    (agenticOrgResult?.ok ? agenticOrgResult.explanation : curatedExplanation);
+  const mode = agenticOrgResult?.ok && !approvedReview?.approvedExplanation
+    ? "agenticorg"
+    : "curated";
   await db.insert(learningEventsTable).values({
     id: randomUUID(),
     sessionId: session.id,
     type: "alternative_explanation",
     sectionId: body.data.sectionId,
   });
-  res.json(ExplainConceptResponse.parse({ explanation, mode: "curated" }));
+  res.json(ExplainConceptResponse.parse({ explanation, mode }));
 });
 
 router.post("/agent/intervene", async (req, res): Promise<void> => {

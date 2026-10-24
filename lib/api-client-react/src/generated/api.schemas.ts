@@ -187,7 +187,7 @@ export type ExplainResultMode = typeof ExplainResultMode[keyof typeof ExplainRes
 
 export const ExplainResultMode = {
   curated: 'curated',
-  ai: 'ai',
+  agenticorg: 'agenticorg',
 } as const;
 
 export interface ExplainResult {

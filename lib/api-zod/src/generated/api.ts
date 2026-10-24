@@ -167,7 +167,7 @@ export const ListQuizQuestionsResponse = zod.array(ListQuizQuestionsResponseItem
 
 
 /**
- * @summary Get a curated alternative explanation
+ * @summary Get an AgenticOrg or curated alternative explanation
  */
 export const explainConceptBodySessionIdMin = 8;
 export const explainConceptBodySessionIdMax = 80;
@@ -182,7 +182,7 @@ export const ExplainConceptBody = zod.object({
 
 export const ExplainConceptResponse = zod.object({
   "explanation": zod.string(),
-  "mode": zod.enum(['curated', 'ai'])
+  "mode": zod.enum(['curated', 'agenticorg'])
 })
 
 
