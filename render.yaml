@@ -7,9 +7,8 @@ services:
       corepack enable &&
       corepack prepare pnpm@10.26.1 --activate &&
       pnpm install --frozen-lockfile &&
-      PORT=4173 BASE_PATH=/ pnpm --filter @workspace/toddlebee run build &&
-      pnpm --filter @workspace/api-server run build
-    startCommand: pnpm --filter @workspace/api-server run start
+      pnpm run build:render
+    startCommand: NODE_ENV=production pnpm --filter @workspace/api-server run start
     envVars:
       - key: NODE_VERSION
         value: 24.22.1
