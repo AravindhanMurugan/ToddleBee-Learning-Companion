@@ -65,6 +65,7 @@ export function HomeScreen() {
       </View>
       <AppText style={styles.gradeLabel}>{t.gradeFour}</AppText>
       <PrimaryButton label={createSession.isPending ? t.loading : t.startLearning} icon="arrow-right" disabled={createSession.isPending || !ready} onPress={() => void start()} testID="button-start-learning" />
+      <PrimaryButton label={language === 'ta' ? 'களிமண் விநாயகர் உருவாக்கம்' : 'Make a clay Ganesha'} icon="star" secondary onPress={() => router.push('/craft')} testID="button-home-craft" />
       {sessionId && <PrimaryButton label={t.continueLearning} icon="book-open" secondary onPress={() => router.push('/learn')} testID="button-continue-learning" />}
       <PrimaryButton label={t.sampleLesson} icon="eye" secondary onPress={() => router.push('/learn')} testID="button-sample-lesson" />
       {!!error && <Notice tone="error">{error}</Notice>}
@@ -233,6 +234,7 @@ export function LessonScreen() {
       <AppText>{description}</AppText>
       <View style={[styles.visualPanel, { backgroundColor: colors.background }]}><FractionVisual visual={section.visual} /></View>
       <View style={styles.buttonStack}>
+        <PrimaryButton label={language === 'ta' ? 'களிமண் விநாயகர் உருவாக்கம்' : 'Try the clay Ganesha activity'} icon="star" secondary onPress={() => router.push('/craft')} testID="button-lesson-craft" />
         <PrimaryButton label={audioBusy ? t.audioLoading : t.listen} icon="volume-2" disabled={audioBusy} onPress={() => void listen()} testID="button-listen" />
         {audioMode && <PrimaryButton label={audioMode === 'elevenlabs' && playerStatus.playing || audioMode === 'device' ? t.pause : t.resume} icon={audioMode === 'elevenlabs' && playerStatus.playing || audioMode === 'device' ? 'pause' : 'play'} secondary onPress={toggleAudio} testID="button-audio-toggle" />}
         <PrimaryButton label={t.explainAnother} icon="refresh-cw" secondary disabled={explain.isPending} onPress={() => void showAnotherWay()} testID="button-explain-another" />

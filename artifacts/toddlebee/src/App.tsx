@@ -18,6 +18,7 @@ import {
   useListQuizQuestions, useRequestIntervention, useSpeakExplanation, useSubmitQuizAnswer
 } from '@workspace/api-client-react';
 import type { EducatorReview, LessonSection, PaymentStatus, QuizAnswerResultNextAction } from '@workspace/api-client-react';
+import { CraftPage } from './CraftPage';
 
 type Language = 'en' | 'ta';
 const LanguageContext = createContext<{ language: Language; setLanguage: (lang: Language) => void }>({
@@ -434,6 +435,13 @@ function HomePage() {
       </div>
       <div className="notice">{t.featuredDetails}</div>
     </section>
+    <section className="craft-discovery" aria-labelledby="craft-discovery-title">
+      <div className="craft-discovery-mark" aria-hidden="true"><Sparkles size={25} /></div>
+      <div><div className="eyebrow">{language === 'ta' ? 'கைகளால் செய்யும் கற்றல்' : 'A hands-on learning break'}</div>
+        <h2 id="craft-discovery-title">{language === 'ta' ? 'களிமண்ணால் விநாயகர் செய்வோம்' : 'Make a clay Ganesha'}</h2>
+        <p>{language === 'ta' ? 'தமிழ் அல்லது ஆங்கிலத்தில், ஏழு பாதுகாப்பான படிகளாக வழிகாட்டும் கைவினை.' : 'A seven-step guided craft in English or Tamil, with safety reminders and progress saved only here.'}</p></div>
+      <Link href="/craft" className="btn" data-testid="link-home-craft">{language === 'ta' ? 'கைவினையைத் தொடங்கு' : 'Explore the craft'}<ArrowRight size={18} /></Link>
+    </section>
     <section className="feature-band" aria-label={t.benefitsLabel}>
       <article className="feature-tile"><div className="feature-icon"><BookOpen size={21} /></div><h3>{t.benefitLanguageTitle}</h3><p>{t.benefitLanguage}</p></article>
       <article className="feature-tile"><div className="feature-icon"><Heart size={21} /></div><h3>{t.benefitPaceTitle}</h3><p>{t.benefitPace}</p></article>
@@ -648,7 +656,10 @@ function LessonPage() {
   if (query.isLoading) return <main className="page"><div className="skeleton" style={{ width: 260 }} /><div className="skeleton" style={{ height: 280, marginTop: 20 }} role="status" aria-label={t.loading} /></main>;
   return <main className="page">
     <div className="section-heading"><div><div className="eyebrow">{t.gradeSubject}</div><h1>{t.lessonTitle}</h1><p>{t.lessonIntro}</p></div>
-      <Link href="/quiz" className="btn btn-secondary btn-small" data-testid="link-lesson-practice">{t.quiz}<ArrowRight size={17} /></Link>
+      <div className="content-actions" style={{ marginTop: 0 }}>
+        <Link href="/craft" className="btn btn-secondary btn-small" data-testid="link-fractions-craft">{language === 'ta' ? 'களிமண் கைவினை' : 'Clay craft'}<Sparkles size={16} /></Link>
+        <Link href="/quiz" className="btn btn-secondary btn-small" data-testid="link-lesson-practice">{t.quiz}<ArrowRight size={17} /></Link>
+      </div>
     </div>
     {sample && <div className="notice" data-testid="status-lesson-sample">{previewMode ? t.lessonSample : t.sampleSessionNotice}</div>}
     {query.isError && <div className="notice" role="status" data-testid="status-lesson-fallback">{t.lessonFallbackError} <button className="btn btn-small" onClick={() => query.refetch()} data-testid="button-retry-lesson">{t.retry}</button></div>}
@@ -1007,6 +1018,7 @@ function Router() {
     const enMeta: Record<string, { title: string; description: string }> = {
       '/': { title: 'ToddleBee — Every child can learn', description: 'A patient bilingual learning companion for Grade 4 fractions, with visual practice and encouraging progress.' },
       '/learn': { title: 'Fractions lesson · ToddleBee', description: 'Explore fractions one small step at a time in English or Tamil.' },
+      '/craft': { title: 'Clay Ganesha craft · ToddleBee', description: 'A gentle, bilingual seven-step clay craft activity for children, with local-only progress and safety guidance.' },
       '/quiz': { title: 'Fractions practice · ToddleBee', description: 'Try five gentle Grade 4 fraction questions with helpful feedback.' },
       '/progress': { title: 'My progress · ToddleBee', description: 'See learning sessions, practice, and fraction concepts over time.' },
       '/parent': { title: 'Parent and educator guidance · ToddleBee', description: 'Support a child’s fraction learning with thoughtful prompts and human guidance.' },
@@ -1016,6 +1028,7 @@ function Router() {
     const taMeta: Record<string, { title: string; description: string }> = {
       '/': { title: 'ToddleBee — ஒவ்வொரு குழந்தையும் கற்கலாம்', description: '4ஆம் வகுப்பு பின்னங்களைக் கற்க அன்பான தமிழ் மற்றும் ஆங்கிலக் கற்றல் துணை.' },
       '/learn': { title: 'பின்னங்கள் பாடம் · ToddleBee', description: 'தமிழ் அல்லது ஆங்கிலத்தில் பின்னங்களை ஒவ்வொரு படியாகக் கற்கலாம்.' },
+      '/craft': { title: 'களிமண் விநாயகர் கைவினை · ToddleBee', description: 'குழந்தைகளுக்கான பாதுகாப்பு வழிகாட்டலுடன் ஏழு படி தமிழ் மற்றும் ஆங்கிலக் களிமண் கைவினை.' },
       '/quiz': { title: 'பின்னங்கள் பயிற்சி · ToddleBee', description: 'உதவிகரமான பின்னூட்டத்துடன் ஐந்து பின்னக் கேள்விகளை முயற்சிக்கலாம்.' },
       '/progress': { title: 'என் முன்னேற்றம் · ToddleBee', description: 'உங்கள் கற்றல் அமர்வுகளையும் பின்னப் பயிற்சியையும் பாருங்கள்.' },
       '/parent': { title: 'பெற்றோர் மற்றும் ஆசிரியர் வழிகாட்டி · ToddleBee', description: 'குழந்தையின் பின்னக் கற்றலுக்கு ஊக்கமளிக்கும் வழிகாட்டுதல்.' },
@@ -1040,9 +1053,14 @@ function Router() {
     icon.href = `${import.meta.env.BASE_URL}favicon.svg`;
     icon.type = 'image/svg+xml';
   }, [language, location]);
+  const CraftRoute = () => {
+    const current = useLanguage();
+    return <CraftPage language={current.language} />;
+  };
   return <ErrorBoundary FallbackComponent={LocalizedErrorFallback}><Shell><Switch>
     <Route path="/" component={HomePage} />
     <Route path="/learn" component={LessonPage} />
+    <Route path="/craft" component={CraftRoute} />
     <Route path="/quiz" component={QuizPage} />
     <Route path="/progress" component={ProgressPage} />
     <Route path="/parent" component={ParentPage} />
