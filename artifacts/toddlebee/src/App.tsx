@@ -366,8 +366,8 @@ function Shell({ children }: { children: ReactNode }) {
   return <div className="app-shell"><Header />{children}<footer className="footer">ToddleBee · {copy[language].tagline}</footer></div>;
 }
 
-function BeeHeroArt({ language }: { language: Language }) {
-  const t = copy[language];
+function BeeHeroArt({ language = 'en' }: { language?: Language }) {
+  const t = copy[language] ?? copy.en;
   return <div className="hero-art" aria-label={t.beeArt} role="img">
     <div className="sun-disc" /><div className="spark s1">✦</div><div className="spark s2">✦</div>
     <div className="bee-illustration"><div className="bee-wing one" /><div className="bee-wing two" /><div className="bee-body" /><i className="bee-eye" /><i className="bee-smile" /><i className="bee-antenna" /></div>
