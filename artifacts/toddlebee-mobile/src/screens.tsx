@@ -67,7 +67,7 @@ export function HomeScreen() {
       <PrimaryButton label={createSession.isPending ? t.loading : t.startLearning} icon="arrow-right" disabled={createSession.isPending || !ready} onPress={() => void start()} testID="button-start-learning" />
       {sessionId && <PrimaryButton label={t.continueLearning} icon="book-open" secondary onPress={() => router.push('/learn')} testID="button-continue-learning" />}
       <PrimaryButton label={t.sampleLesson} icon="eye" secondary onPress={() => router.push('/learn')} testID="button-sample-lesson" />
-      {error && <Notice tone="error">{error}</Notice>}
+      {!!error && <Notice tone="error">{error}</Notice>}
       {storageError && <Notice tone="error">Settings could not be saved on this device.</Notice>}
     </Card>
 

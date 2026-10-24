@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { Image, Platform, Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { Children, type ComponentProps, type ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollViewCompat } from '@/components/KeyboardAwareScrollViewCompat';
 import { useColors } from '@/hooks/useColors';
@@ -74,11 +74,6 @@ export function PageShell({
 
 export function Card({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   const colors = useColors();
-  for (const child of Children.toArray(children)) {
-    if (typeof child === 'string' || typeof child === 'number') {
-      console.warn('ToddleBee Card received a raw text child:', JSON.stringify(child));
-    }
-  }
   return <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }, style]}>{children}</View>;
 }
 
