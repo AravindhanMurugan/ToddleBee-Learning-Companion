@@ -32,10 +32,6 @@ export function LoginScreen() {
         {error && <Notice tone="error">{ta ? 'பயனர் பெயர் அல்லது கடவுச்சொல் சரியில்லை.' : 'That username or password did not match.'}</Notice>}
         <PrimaryButton label={ta ? 'தொடர உள்நுழைக' : 'Sign in to continue'} icon="arrow-right" onPress={() => { const ok = signIn(username, password); setError(!ok); if (ok) setPassword(''); }} testID="login-submit" />
       </Card>
-      <Card style={{ backgroundColor: colors.secondary }}>
-        <Text style={[styles.hintTitle, { color: colors.foreground }]}>{ta ? 'செயல்விளக்க உள்நுழைவு' : 'Demo credentials'}</Text>
-        <AppText>{ta ? 'பயனர் பெயர்: test   ·   கடவுச்சொல்: test' : 'Username: test   ·   Password: test'}</AppText>
-      </Card>
       <Notice>{ta ? 'இது பொதுச் செயல்விளக்கத்திற்கான கதவு மட்டுமே; உண்மையான பாதுகாப்பு அல்ல. கற்றவர்களின் உண்மையான தரவு அல்லது கட்டணப் பரிவர்த்தனைகளைப் பாதுகாக்க இதைப் பயன்படுத்த வேண்டாம்.' : 'This public demo gate is NOT real security. Never use it to protect real learner data or payment flows.'}</Notice>
     </View>
   </SafeAreaView>;
@@ -55,5 +51,4 @@ const styles = StyleSheet.create({
   input: { minHeight: 50, borderWidth: 1, borderRadius: 14, paddingHorizontal: 14, fontFamily: 'DMSans_400Regular', fontSize: 16 },
   passwordRow: { minHeight: 50, borderWidth: 1, borderRadius: 14, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center' },
   passwordInput: { flex: 1, minHeight: 48, fontFamily: 'DMSans_400Regular', fontSize: 16 },
-  hintTitle: { fontFamily: 'Nunito_800ExtraBold', fontSize: 18 },
 });

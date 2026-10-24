@@ -1054,7 +1054,6 @@ function LoginPage() {
         {error && <p className="login-error" role="alert" data-testid="status-login-error">{ta ? 'பயனர் பெயர் அல்லது கடவுச்சொல் சரியில்லை.' : 'That username or password is not correct.'}</p>}
         <button className="btn login-submit" type="submit" data-testid="button-login-submit">{ta ? 'டெமோவைத் திற' : 'Enter the demo'}<ArrowRight size={17} /></button>
       </form>
-      <div className="login-hint" data-testid="text-login-credentials"><strong>{ta ? 'சோதனை விவரங்கள்' : 'Test credentials'}</strong><span>Username: <b>test</b> · Password: <b>test</b></span></div>
       <div className="login-warning" role="note" data-testid="text-login-security-warning"><ShieldCheck size={19} /><p>{ta ? 'இந்தப் பொதுக் காட்சி நுழைவு உண்மையான பாதுகாப்பு அல்ல. உண்மையான கற்றவர் தரவையோ கட்டணச் செயல்களையோ இது பாதுகாக்கக் கூடாது.' : 'This public demo gate is NOT real security. It must not protect real learner data or payment flows.'}</p></div>
     </section>
   </main>;
