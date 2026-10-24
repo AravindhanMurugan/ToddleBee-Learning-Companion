@@ -6,3 +6,4 @@
 .env
 .env.*
 !.env.example
+artifacts/toddlebee-mobile/static-build/

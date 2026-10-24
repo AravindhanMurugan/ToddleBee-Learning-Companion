@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import type { ErrorFallbackProps } from '@/components/error-boundary';
@@ -8,7 +8,7 @@ import { Link, Route, Switch, useLocation, Router as WouterRouter } from 'wouter
 import {
   ArrowRight, AudioLines, BookOpen, Check, CircleHelp,
   Compass, Heart, Home, Lightbulb, LockKeyhole, Pause, RefreshCw, ShieldCheck,
-  Sparkles, Volume2, X
+  Sparkles, Volume2, X, Flower2, LogOut
 } from 'lucide-react';
 import {
   getGetAgentActivityQueryKey, getGetLearningProgressQueryKey, getListEducatorReviewsQueryKey,
@@ -19,10 +19,11 @@ import {
 } from '@workspace/api-client-react';
 import type { EducatorReview, LessonSection, PaymentStatus, QuizAnswerResultNextAction } from '@workspace/api-client-react';
 import { CraftPage } from './CraftPage';
+import { LotusCraftPage } from './LotusCraftPage';
 
 type Language = 'en' | 'ta';
-const LanguageContext = createContext<{ language: Language; setLanguage: (lang: Language) => void }>({
-  language: 'en', setLanguage: () => undefined
+const LanguageContext = createContext<{ language: Language; setLanguage: (lang: Language) => void; signOut: () => void; signIn: () => void; signedIn: boolean }>({
+  language: 'en', setLanguage: () => undefined, signOut: () => undefined, signIn: () => undefined, signedIn: false
 });
 const useLanguage = () => useContext(LanguageContext);
 const queryClient = new QueryClient();
@@ -331,9 +332,9 @@ function BeeMark({ label }: { label: string }) {
 }
 
 function Header() {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, signOut } = useLanguage();
   const t = copy[language];
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const links = [
     ['/', t.home], ['/learn', t.lesson], ['/quiz', t.practice], ['/progress', t.progress],
     ['/parent', t.grownups], ['/pricing', t.pricing]
@@ -352,6 +353,7 @@ function Header() {
         <button type="button" onClick={() => setLanguage('en')} aria-pressed={language === 'en'} data-testid="button-language-en">EN</button>
         <button type="button" onClick={() => setLanguage('ta')} aria-pressed={language === 'ta'} data-testid="button-language-ta">தமிழ்</button>
       </div>
+      <button type="button" className="signout-button" onClick={() => { signOut(); setLocation('/'); }} data-testid="button-sign-out"><LogOut size={16} />{language === 'ta' ? 'வெளியேறு' : 'Sign out'}</button>
     </header>
     <nav className="mobile-nav" aria-label={t.quickNav}>
       {mobileLinks.map(([href, label], index) => {
@@ -441,6 +443,13 @@ function HomePage() {
         <h2 id="craft-discovery-title">{language === 'ta' ? 'களிமண்ணால் விநாயகர் செய்வோம்' : 'Make a clay Ganesha'}</h2>
         <p>{language === 'ta' ? 'தமிழ் அல்லது ஆங்கிலத்தில், ஏழு பாதுகாப்பான படிகளாக வழிகாட்டும் கைவினை.' : 'A seven-step guided craft in English or Tamil, with safety reminders and progress saved only here.'}</p></div>
       <Link href="/craft" className="btn" data-testid="link-home-craft">{language === 'ta' ? 'கைவினையைத் தொடங்கு' : 'Explore the craft'}<ArrowRight size={18} /></Link>
+    </section>
+    <section className="lotus-discovery" aria-labelledby="lotus-discovery-title">
+      <div className="lotus-discovery-mark" aria-hidden="true"><Flower2 size={25} /></div>
+      <div><div className="eyebrow">{language === 'ta' ? 'உள்ளூர் களிமண் கைவினை' : 'A second clay activity'}</div>
+        <h2 id="lotus-discovery-title">{language === 'ta' ? 'களிமண் தாமரை செய்வோம்' : 'Make a clay lotus'}</h2>
+        <p>{language === 'ta' ? 'ஐந்து மென்மையான படிகள். உன் முன்னேற்றம் இந்தச் சாதனத்தில் மட்டுமே இருக்கும்.' : 'Five gentle phases, with your progress saved only on this device.'}</p></div>
+      <Link href="/craft-lotus" className="btn lotus-discovery-button" data-testid="link-home-craft-lotus">{language === 'ta' ? 'தாமரை கைவினை' : 'Explore the lotus'}<ArrowRight size={18} /></Link>
     </section>
     <section className="feature-band" aria-label={t.benefitsLabel}>
       <article className="feature-tile"><div className="feature-icon"><BookOpen size={21} /></div><h3>{t.benefitLanguageTitle}</h3><p>{t.benefitLanguage}</p></article>
@@ -597,6 +606,8 @@ function LessonPage() {
     const utterance = new SpeechSynthesisUtterance(description);
     utterance.lang = targetLang;
     utterance.voice = browserVoice;
+    utterance.rate = 0.96;
+    utterance.pitch = 1.08;
     utterance.onend = () => setAudioStatus('idle');
     utterance.onerror = () => setAudioStatus('unavailable');
     utteranceRef.current = utterance;
@@ -1008,8 +1019,49 @@ function LocalizedErrorFallback({ resetError }: ErrorFallbackProps) {
   </main>;
 }
 
+function LoginPage() {
+  const { language, setLanguage, signIn } = useLanguage();
+  const ta = language === 'ta';
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (username === 'test' && password === 'test') {
+      setPassword('');
+      setError(false);
+      signIn();
+    } else {
+      setPassword('');
+      setError(true);
+    }
+  };
+  return <main className="login-screen">
+    <div className="login-language lang-switch" role="group" aria-label={ta ? 'மொழியைத் தேர்ந்தெடுக்கவும்' : 'Choose language'}>
+      <button type="button" onClick={() => setLanguage('en')} aria-pressed={!ta} data-testid="button-login-language-en">EN</button>
+      <button type="button" onClick={() => setLanguage('ta')} aria-pressed={ta} data-testid="button-login-language-ta">தமிழ்</button>
+    </div>
+    <section className="login-card">
+      <div className="login-brand"><BeeMark label="ToddleBee" /><span>ToddleBee</span></div>
+      <div className="eyebrow">{ta ? 'டெமோ நுழைவு' : 'Demo access'}</div>
+      <h1>{ta ? 'மீண்டும் வரவேற்கிறோம்' : 'Welcome to ToddleBee'}</h1>
+      <p className="login-intro">{ta ? 'மாதிரி கற்றல் பயணத்தைத் தொடர உள்நுழையுங்கள்.' : 'Sign in to continue to the learning experience.'}</p>
+      <form onSubmit={submit} className="login-form">
+        <label htmlFor="demo-username">{ta ? 'பயனர் பெயர்' : 'Username'}</label>
+        <input id="demo-username" autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} required data-testid="input-login-username" />
+        <label htmlFor="demo-password">{ta ? 'கடவுச்சொல்' : 'Password'}</label>
+        <input id="demo-password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required data-testid="input-login-password" />
+        {error && <p className="login-error" role="alert" data-testid="status-login-error">{ta ? 'பயனர் பெயர் அல்லது கடவுச்சொல் சரியில்லை.' : 'That username or password is not correct.'}</p>}
+        <button className="btn login-submit" type="submit" data-testid="button-login-submit">{ta ? 'டெமோவைத் திற' : 'Enter the demo'}<ArrowRight size={17} /></button>
+      </form>
+      <div className="login-hint" data-testid="text-login-credentials"><strong>{ta ? 'சோதனை விவரங்கள்' : 'Test credentials'}</strong><span>Username: <b>test</b> · Password: <b>test</b></span></div>
+      <div className="login-warning" role="note" data-testid="text-login-security-warning"><ShieldCheck size={19} /><p>{ta ? 'இந்தப் பொதுக் காட்சி நுழைவு உண்மையான பாதுகாப்பு அல்ல. உண்மையான கற்றவர் தரவையோ கட்டணச் செயல்களையோ இது பாதுகாக்கக் கூடாது.' : 'This public demo gate is NOT real security. It must not protect real learner data or payment flows.'}</p></div>
+    </section>
+  </main>;
+}
+
 function Router() {
-  const { language } = useLanguage();
+  const { language, signedIn } = useLanguage();
   const [location] = useLocation();
   useEffect(() => {
     if (location !== '/learn' && location !== '/quiz') {
@@ -1019,6 +1071,7 @@ function Router() {
       '/': { title: 'ToddleBee — Every child can learn', description: 'A patient bilingual learning companion for Grade 4 fractions, with visual practice and encouraging progress.' },
       '/learn': { title: 'Fractions lesson · ToddleBee', description: 'Explore fractions one small step at a time in English or Tamil.' },
       '/craft': { title: 'Clay Ganesha craft · ToddleBee', description: 'A gentle, bilingual seven-step clay craft activity for children, with local-only progress and safety guidance.' },
+      '/craft-lotus': { title: 'Clay lotus craft · ToddleBee', description: 'A gentle, bilingual clay lotus craft activity with local-only progress and safety guidance.' },
       '/quiz': { title: 'Fractions practice · ToddleBee', description: 'Try five gentle Grade 4 fraction questions with helpful feedback.' },
       '/progress': { title: 'My progress · ToddleBee', description: 'See learning sessions, practice, and fraction concepts over time.' },
       '/parent': { title: 'Parent and educator guidance · ToddleBee', description: 'Support a child’s fraction learning with thoughtful prompts and human guidance.' },
@@ -1029,6 +1082,7 @@ function Router() {
       '/': { title: 'ToddleBee — ஒவ்வொரு குழந்தையும் கற்கலாம்', description: '4ஆம் வகுப்பு பின்னங்களைக் கற்க அன்பான தமிழ் மற்றும் ஆங்கிலக் கற்றல் துணை.' },
       '/learn': { title: 'பின்னங்கள் பாடம் · ToddleBee', description: 'தமிழ் அல்லது ஆங்கிலத்தில் பின்னங்களை ஒவ்வொரு படியாகக் கற்கலாம்.' },
       '/craft': { title: 'களிமண் விநாயகர் கைவினை · ToddleBee', description: 'குழந்தைகளுக்கான பாதுகாப்பு வழிகாட்டலுடன் ஏழு படி தமிழ் மற்றும் ஆங்கிலக் களிமண் கைவினை.' },
+      '/craft-lotus': { title: 'களிமண் தாமரை கைவினை · ToddleBee', description: 'உள்ளூரில் மட்டும் முன்னேற்றம் சேமிக்கும் தமிழ் மற்றும் ஆங்கிலக் களிமண் தாமரை கைவினை.' },
       '/quiz': { title: 'பின்னங்கள் பயிற்சி · ToddleBee', description: 'உதவிகரமான பின்னூட்டத்துடன் ஐந்து பின்னக் கேள்விகளை முயற்சிக்கலாம்.' },
       '/progress': { title: 'என் முன்னேற்றம் · ToddleBee', description: 'உங்கள் கற்றல் அமர்வுகளையும் பின்னப் பயிற்சியையும் பாருங்கள்.' },
       '/parent': { title: 'பெற்றோர் மற்றும் ஆசிரியர் வழிகாட்டி · ToddleBee', description: 'குழந்தையின் பின்னக் கற்றலுக்கு ஊக்கமளிக்கும் வழிகாட்டுதல்.' },
@@ -1057,10 +1111,16 @@ function Router() {
     const current = useLanguage();
     return <CraftPage language={current.language} />;
   };
+  const LotusRoute = () => {
+    const current = useLanguage();
+    return <LotusCraftPage language={current.language} />;
+  };
+  if (!signedIn) return <LoginPage />;
   return <ErrorBoundary FallbackComponent={LocalizedErrorFallback}><Shell><Switch>
     <Route path="/" component={HomePage} />
     <Route path="/learn" component={LessonPage} />
     <Route path="/craft" component={CraftRoute} />
+    <Route path="/craft-lotus" component={LotusRoute} />
     <Route path="/quiz" component={QuizPage} />
     <Route path="/progress" component={ProgressPage} />
     <Route path="/parent" component={ParentPage} />
@@ -1072,6 +1132,7 @@ function Router() {
 
 function AppExperience() {
   const [language, setLanguageValue] = useState<Language>(() => localStorage.getItem('toddlebee-language') === 'ta' ? 'ta' : 'en');
+  const [signedIn, setSignedIn] = useState(() => localStorage.getItem('toddlebee-demo-signed-in') === 'true');
   const recordLearningEvent = useRecordLearningEvent();
   const setLanguage = (next: Language) => {
     if (next === language) return;
@@ -1083,7 +1144,15 @@ function AppExperience() {
     setLanguageValue(next);
     localStorage.setItem('toddlebee-language', next);
   };
-  const context = useMemo(() => ({ language, setLanguage }), [language]);
+  const signIn = () => {
+    localStorage.setItem('toddlebee-demo-signed-in', 'true');
+    setSignedIn(true);
+  };
+  const signOut = () => {
+    localStorage.removeItem('toddlebee-demo-signed-in');
+    setSignedIn(false);
+  };
+  const context = useMemo(() => ({ language, setLanguage, signedIn, signIn, signOut }), [language, signedIn]);
   return <LanguageContext.Provider value={context}>
     <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><Router /></WouterRouter>
   </LanguageContext.Provider>;

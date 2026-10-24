@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: toddlebee
+    runtime: node
+    healthCheckPath: /api/health
+    buildCommand: >-
+      corepack enable &&
+      corepack prepare pnpm@10.26.1 --activate &&
+      pnpm install --frozen-lockfile &&
+      PORT=4173 BASE_PATH=/ pnpm --filter @workspace/toddlebee run build &&
+      pnpm --filter @workspace/api-server run build
+    startCommand: pnpm --filter @workspace/api-server run start
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false

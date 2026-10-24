@@ -5,6 +5,7 @@ dist
 tmp
 out-tsc
 *.tsbuildinfo
+artifacts/toddlebee-mobile/static-build/
 .expo
 .expo-shared
 .next

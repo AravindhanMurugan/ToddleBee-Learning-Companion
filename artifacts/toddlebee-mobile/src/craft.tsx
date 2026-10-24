@@ -6,6 +6,7 @@ import Svg, { Circle, Ellipse, Path, Rect } from 'react-native-svg';
 import { AppText, Card, Eyebrow, Notice, PageShell, PrimaryButton } from './components';
 import { useAppSettings } from './settings';
 import { useColors } from '@/hooks/useColors';
+import { useRouter } from 'expo-router';
 
 const STORAGE_KEY = 'toddlebee-clay-craft-v1';
 
@@ -15,12 +16,11 @@ type Phase = {
   action: string;
   actionDone: string;
   confirmation: string;
-  checklist?: string[];
 };
 
 const phases: Record<'en' | 'ta', Phase[]> = {
   en: [
-    { title: 'Get ready', guidance: 'Wash your hands, cover the table, and choose non-toxic air-dry or natural clay with a grown-up.', action: 'Tap each ready step below.', actionDone: 'Your making space is ready.', confirmation: 'I finished this real-clay step.', checklist: ['I washed my hands', 'We covered the table', 'A grown-up helped choose safe clay'] },
+    { title: 'Get ready', guidance: 'Wash your hands, cover the table, and choose non-toxic air-dry or natural clay with a grown-up.', action: 'Tap to set up your safe making space.', actionDone: 'Your making space is ready.', confirmation: 'I finished this real-clay step.' },
     { title: 'Make the seat and body', guidance: 'Roll a little clay into a seat. Shape a larger, round body and gently place it on top.', action: 'Press and hold to shape the round body.', actionDone: 'A seat and round body are on the model.', confirmation: 'I finished this real-clay step.' },
     { title: 'Add the head and ears', guidance: 'Make a smaller round head. Add two broad, soft ears on either side.', action: 'Tap to add the head and two broad ears.', actionDone: 'The head and ears have joined the model.', confirmation: 'I finished this real-clay step.' },
     { title: 'Curve the trunk', guidance: 'Roll a small clay piece like a soft rope. Gently curve it down and to one side.', action: 'Trace the curve by tapping the shaping button.', actionDone: 'A gently curved trunk is in place.', confirmation: 'I finished this real-clay step.' },
@@ -29,7 +29,7 @@ const phases: Record<'en' | 'ta', Phase[]> = {
     { title: 'Let it dry', guidance: 'Let the figure dry exactly as the clay instructions say. Ask a grown-up before painting.', action: 'Tap to place the finished figure on its drying rest.', actionDone: 'Your model is ready to dry safely.', confirmation: 'I finished this real-clay step.' },
   ],
   ta: [
-    { title: 'தயாராகலாம்', guidance: 'கைகளை கழுவி, மேசையை மூடி, பெரியவருடன் நச்சில்லாத காற்றில் உலரும் அல்லது இயற்கைக் களிமண்ணைத் தேர்ந்தெடுக்கவும்.', action: 'தயார்நிலைப் படிகளை ஒவ்வொன்றாகத் தொடவும்.', actionDone: 'உங்கள் வேலை செய்யும் இடம் தயார்.', confirmation: 'இந்த உண்மையான களிமண் படியை முடித்துவிட்டேன்.', checklist: ['கைகளை கழுவினேன்', 'மேசையை மூடினோம்', 'பாதுகாப்பான களிமண்ணைப் பெரியவர் தேர்ந்தெடுத்தார்'] },
+    { title: 'தயாராகலாம்', guidance: 'கைகளை கழுவி, மேசையை மூடி, பெரியவருடன் நச்சில்லாத காற்றில் உலரும் அல்லது இயற்கைக் களிமண்ணைத் தேர்ந்தெடுக்கவும்.', action: 'பாதுகாப்பான வேலை இடத்தை அமைக்கத் தொடு.', actionDone: 'உங்கள் வேலை செய்யும் இடம் தயார்.', confirmation: 'இந்த உண்மையான களிமண் படியை முடித்துவிட்டேன்.' },
     { title: 'அமர்விடம், உடல் அமைக்கலாம்', guidance: 'சிறிது களிமண்ணை உருட்டி அமர்விடம் செய்யுங்கள். பெரிய உருண்டையான உடலை அமைத்து மெதுவாக அதன் மேல் வையுங்கள்.', action: 'உருண்டையான உடலை அமைக்க அழுத்தித் தக்கவைக்கவும்.', actionDone: 'அமர்விடமும் உருண்டை உடலும் மாதிரியில் உள்ளன.', confirmation: 'இந்த உண்மையான களிமண் படியை முடித்துவிட்டேன்.' },
     { title: 'தலை, காதுகளைச் சேர்க்கலாம்', guidance: 'சிறிய உருண்டையான தலையைச் செய்யுங்கள். இருபுறமும் அகலமான, மென்மையான காதுகளைச் சேருங்கள்.', action: 'தலை, இரண்டு அகலமான காதுகளைச் சேர்க்கத் தொடவும்.', actionDone: 'தலையும் காதுகளும் மாதிரியில் சேர்ந்தன.', confirmation: 'இந்த உண்மையான களிமண் படியை முடித்துவிட்டேன்.' },
     { title: 'தும்பிக்கையை வளைப்போம்', guidance: 'சிறிய களிமண் துண்டை மென்மையான கயிறுபோல் உருட்டுங்கள். கீழே ஒரு பக்கமாக மெதுவாக வளைக்கவும்.', action: 'வடிவமைப்பு பொத்தானைத் தொட்டு வளைவைப் பாருங்கள்.', actionDone: 'மெதுவாக வளைந்த தும்பிக்கை அமைந்தது.', confirmation: 'இந்த உண்மையான களிமண் படியை முடித்துவிட்டேன்.' },
@@ -39,11 +39,12 @@ const phases: Record<'en' | 'ta', Phase[]> = {
   ],
 };
 
-type SavedProgress = { actions: boolean[]; confirmations: boolean[]; prepChecks: boolean[] };
-const blankProgress = (): SavedProgress => ({ actions: Array(7).fill(false), confirmations: Array(7).fill(false), prepChecks: Array(3).fill(false) });
+type SavedProgress = { phaseIndex: number; actions: boolean[]; confirmations: boolean[] };
+const blankProgress = (): SavedProgress => ({ phaseIndex: 0, actions: Array(7).fill(false), confirmations: Array(7).fill(false) });
 
 export function ClayCraftScreen() {
   const colors = useColors();
+  const router = useRouter();
   const { language } = useAppSettings();
   const ta = language === 'ta';
   const copy = phases[ta ? 'ta' : 'en'];
@@ -53,12 +54,10 @@ export function ClayCraftScreen() {
   const [reduceMotion, setReduceMotion] = useState(false);
   const pulse = useRef(new Animated.Value(1)).current;
   const completed = progress.confirmations.filter(Boolean).length;
-  const activeIndex = progress.confirmations.findIndex((done) => !done);
-  const finished = activeIndex < 0;
-  const index = finished ? 6 : activeIndex;
+  const finished = progress.phaseIndex >= 7;
+  const index = Math.min(progress.phaseIndex, 6);
   const phase = copy[index];
-  const prepDone = progress.prepChecks.every(Boolean);
-  const actionDone = index === 0 ? prepDone : progress.actions[index];
+  const actionDone = progress.actions[index];
   const stage = Math.min(7, completed + (actionDone && !finished ? 1 : 0));
   const percent = Math.round((completed / 7) * 100);
   const stageLabel = useMemo(() => ta ? `${completed} / 7 படிகள் முடிந்தன` : `${completed} of 7 phases complete`, [completed, ta]);
@@ -71,9 +70,9 @@ export function ClayCraftScreen() {
         try {
           const parsed = JSON.parse(stored) as Partial<SavedProgress>;
           setProgress({
+            phaseIndex: Math.max(0, Math.min(7, Number(parsed.phaseIndex) || 0)),
             actions: Array.from({ length: 7 }, (_, i) => Boolean(parsed.actions?.[i])),
             confirmations: Array.from({ length: 7 }, (_, i) => Boolean(parsed.confirmations?.[i])),
-            prepChecks: Array.from({ length: 3 }, (_, i) => Boolean(parsed.prepChecks?.[i])),
           });
         } catch {
           setProgress(blankProgress());
@@ -98,20 +97,12 @@ export function ClayCraftScreen() {
     ]).start();
   };
   const performAction = () => {
-    if (index === 0) return;
     setProgress((current) => ({ ...current, actions: current.actions.map((value, i) => i === index ? true : value) }));
-    animate();
-  };
-  const togglePrep = (checkIndex: number) => {
-    setProgress((current) => {
-      const prepChecks = current.prepChecks.map((value, i) => i === checkIndex ? !value : value);
-      return { ...current, prepChecks, actions: current.actions.map((value, i) => i === 0 ? prepChecks.every(Boolean) : value) };
-    });
     animate();
   };
   const confirmPhase = () => {
     if (!actionDone) return;
-    setProgress((current) => ({ ...current, actions: current.actions.map((value, i) => i === index ? true : value), confirmations: current.confirmations.map((value, i) => i === index ? true : value) }));
+    setProgress((current) => ({ phaseIndex: Math.min(7, index + 1), actions: current.actions.map((value, i) => i === index ? true : value), confirmations: current.confirmations.map((value, i) => i === index ? true : value) }));
     animate();
   };
   const restart = () => {
@@ -135,6 +126,8 @@ export function ClayCraftScreen() {
     title={ta ? 'களிமண் விநாயகர்' : 'Clay Ganesha'}
     subtitle={ta ? 'ஒவ்வொரு வடிவத்தையும் மெதுவாக உருவாக்குங்கள்.' : 'Shape each part slowly, one step at a time.'}
   >
+    <PrimaryButton label={ta ? 'முந்தைய திரைக்குத் திரும்பு' : 'Back'} icon="arrow-left" secondary onPress={() => router.canGoBack() ? router.back() : router.replace('/')} testID="craft-back" />
+    <PrimaryButton label={ta ? 'களிமண் தாமரை உருவாக்கம்' : 'Try the clay lotus activity'} icon="feather" secondary onPress={() => router.push('/craft-lotus')} testID="craft-link-lotus" />
     <Card style={styles.progressCard}>
       <View style={styles.progressTop}><Eyebrow>{ta ? 'உங்கள் முன்னேற்றம்' : 'YOUR PROGRESS'}</Eyebrow><AppText testID="craft-progress-status" accessibilityLiveRegion="polite">{stageLabel}</AppText></View>
       <View accessibilityRole="progressbar" accessibilityLabel={stageLabel} accessibilityValue={{ min: 0, max: 7, now: completed }} testID="craft-progress-bar" style={[styles.track, { backgroundColor: colors.muted }]}>
@@ -167,13 +160,7 @@ export function ClayCraftScreen() {
         <View style={[styles.actionPanel, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <Eyebrow>{ta ? 'திரைச் செயல்' : 'ON-SCREEN MINI ACTION'}</Eyebrow>
           <AppText>{actionDone ? phase.actionDone : phase.action}</AppText>
-          {index === 0 && phase.checklist ? phase.checklist.map((label, i) => {
-            const checked = progress.prepChecks[i];
-            return <Pressable key={label} accessibilityRole="checkbox" accessibilityState={{ checked }} accessibilityLabel={label} testID={`craft-prep-check-${i + 1}`} onPress={() => togglePrep(i)} style={[styles.checkRow, { borderColor: colors.border, backgroundColor: colors.card }]}>
-              <View style={[styles.checkBox, { borderColor: checked ? colors.accent : colors.border, backgroundColor: checked ? colors.accent : 'transparent' }]}>{checked && <Feather name="check" size={15} color={colors.foreground} />}</View>
-              <AppText style={styles.checkLabel}>{label}</AppText>
-            </Pressable>;
-          }) : (
+          {(
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={actionDone ? phase.actionDone : phase.action}

@@ -66,6 +66,7 @@ export function HomeScreen() {
       <AppText style={styles.gradeLabel}>{t.gradeFour}</AppText>
       <PrimaryButton label={createSession.isPending ? t.loading : t.startLearning} icon="arrow-right" disabled={createSession.isPending || !ready} onPress={() => void start()} testID="button-start-learning" />
       <PrimaryButton label={language === 'ta' ? 'களிமண் விநாயகர் உருவாக்கம்' : 'Make a clay Ganesha'} icon="star" secondary onPress={() => router.push('/craft')} testID="button-home-craft" />
+      <PrimaryButton label={language === 'ta' ? 'களிமண் தாமரை உருவாக்கம்' : 'Make a clay lotus'} icon="feather" secondary onPress={() => router.push('/craft-lotus')} testID="button-home-craft-lotus" />
       {sessionId && <PrimaryButton label={t.continueLearning} icon="book-open" secondary onPress={() => router.push('/learn')} testID="button-continue-learning" />}
       <PrimaryButton label={t.sampleLesson} icon="eye" secondary onPress={() => router.push('/learn')} testID="button-sample-lesson" />
       {!!error && <Notice tone="error">{error}</Notice>}
@@ -138,7 +139,8 @@ export function LessonScreen() {
       setAudioNotice(t.voiceDevice);
       Speech.speak(text, {
         language: language === 'ta' ? languageVoice?.language : languageVoice?.language ?? 'en-IN',
-        rate: 0.88,
+        rate: 0.96,
+        pitch: 1.08,
         onDone: () => setAudioMode(null),
         onStopped: () => setAudioMode(null),
         onError: () => { setAudioMode(null); setAudioNotice(t.voiceError); },

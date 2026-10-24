@@ -21,19 +21,38 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBaseUrl } from '@workspace/api-client-react';
 import { AppSettingsProvider } from '@/src/settings';
+import { DemoAuthProvider, useDemoAuth } from '@/src/auth';
+import { useRouter, useSegments } from 'expo-router';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
-const apiDomain = process.env.EXPO_PUBLIC_DOMAIN;
-setBaseUrl(apiDomain ? `https://${apiDomain}` : null);
+const configuredApiUrl = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
+const apiDomain = process.env.EXPO_PUBLIC_DOMAIN?.trim();
+const apiBaseUrl = configuredApiUrl || (apiDomain ? `https://${apiDomain}` : null);
+setBaseUrl(apiBaseUrl ? (/^https?:\/\//i.test(apiBaseUrl) ? apiBaseUrl : `https://${apiBaseUrl}`) : null);
 
 function RootLayoutNav() {
+  const { ready, signedIn } = useDemoAuth();
+  const segments = useSegments();
+  const router = useRouter();
+  useEffect(() => {
+    if (!ready) return;
+    const atLogin = segments[0] === 'login';
+    if (!signedIn && !atLogin) router.replace('/login');
+    if (signedIn && atLogin) router.replace('/');
+  }, [ready, signedIn, segments, router]);
   return (
     <Stack screenOptions={{ headerBackTitle: 'Back' }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="craft" options={{ headerShown: false }} />
+      <Stack.Protected guard={!ready || !signedIn}>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={ready && signedIn}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="craft" options={{ headerShown: false }} />
+        <Stack.Screen name="craft-lotus" options={{ headerShown: false }} />
+      </Stack.Protected>
     </Stack>
   );
 }
@@ -68,7 +87,9 @@ export default function RootLayout() {
           <GestureHandlerRootView>
             <KeyboardProvider>
               <AppSettingsProvider>
-                <RootLayoutNav />
+                <DemoAuthProvider>
+                  <RootLayoutNav />
+                </DemoAuthProvider>
               </AppSettingsProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>

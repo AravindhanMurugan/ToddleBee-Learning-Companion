@@ -596,3 +596,49 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 @media(max-width:800px){.craft-discovery{grid-template-columns:auto 1fr;padding:22px;gap:14px}.craft-discovery .btn{grid-column:1/-1}.craft-layout{grid-template-columns:1fr}.craft-art-panel{min-height:390px}.craft-heading{align-items:flex-start}.craft-progress-chip{width:68px;height:68px}.craft-heading h1{font-size:clamp(34px,9vw,48px)}}
 @media(max-width:480px){.craft-page{width:calc(100% - 26px);padding-top:21px}.craft-art-panel{min-height:340px;border-radius:24px}.craft-art-caption{left:17px;top:17px;font-size:12px}.craft-step-panel{border-radius:24px;padding:22px}.craft-topline{margin-bottom:21px}.craft-safety{padding:15px}.craft-phase-rail{gap:2px}}
 @media(prefers-reduced-motion:reduce){.ganesha-svg .ganesha-part,.craft-progress-track span,.craft-step-track span,.craft-mini-check{transition:none!important}.craft-celebrate .ganesha-svg,.craft-confetti circle{animation:none!important}}
+
+/* Demo access: clearly marked, intentionally local and never an identity boundary. */
+.signout-button{display:inline-flex;align-items:center;gap:7px;border:1px solid #e9dfce;border-radius:13px;background:#fffaf2;color:#53657b;padding:9px 12px;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
+.signout-button:hover{background:#fff0c5;color:#102b50}
+.login-screen{min-height:100dvh;display:grid;place-items:center;padding:72px 18px 30px;position:relative;background:radial-gradient(ellipse at 85% 15%,#f9e6bd 0,transparent 32%),#fff9ec}
+.login-language{position:absolute;right:clamp(18px,5vw,76px);top:22px}
+.login-card{width:min(100%,480px);background:#fffdf8;border:1px solid #eddfca;border-radius:30px;padding:clamp(25px,6vw,44px);box-shadow:0 22px 60px #5a432019}
+.login-brand{display:flex;align-items:center;gap:9px;color:#102b50;font:900 21px 'Nunito',sans-serif;margin-bottom:34px}
+.login-card h1{font:900 clamp(30px,6vw,42px)/1.08 'Nunito',sans-serif;letter-spacing:-1.2px;color:#102b50;margin:8px 0 10px}
+.login-intro{color:#53657b;line-height:1.6;margin:0 0 24px}
+.login-form{display:grid;gap:9px}
+.login-form label{font-size:13px;font-weight:900;color:#344d68;margin-top:8px}
+.login-form input{height:50px;border:1px solid #e7ddca;border-radius:13px;background:#fff;color:#102b50;padding:0 14px;outline-color:#d89100}
+.login-submit{width:100%;margin-top:12px}
+.login-error{margin:0;color:#9d3f35;font-size:13px;font-weight:800}
+.login-hint{display:grid;gap:6px;margin-top:20px;padding:14px 16px;border-radius:15px;background:#fff3d3;color:#674b11;font-size:13px}
+.login-hint strong{font-size:12px;text-transform:uppercase;letter-spacing:.7px}
+.login-warning{display:flex;align-items:flex-start;gap:11px;margin-top:13px;padding:14px;border:1px solid #efc7b5;border-radius:15px;background:#fff1eb;color:#784532}
+.login-warning svg{flex:none;margin-top:1px}.login-warning p{font-size:12px;line-height:1.55;font-weight:700;margin:0}
+.lotus-discovery{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;margin:13px 0 8px;padding:26px 30px;border:1px solid #e7d6df;border-radius:25px;background:#f7eaf1}
+.lotus-discovery-mark{width:54px;height:54px;display:grid;place-items:center;border-radius:18px;background:#e8c1d2;color:#874d6a}
+.lotus-discovery h2{font:900 24px/1.15 'Nunito',sans-serif;margin:7px 0;color:#4b3028}.lotus-discovery p{margin:0;color:#735b67;line-height:1.55}
+.lotus-discovery-button{background:#d68eac;color:#fffaf7}.lotus-discovery-button:hover{background:#c77c9d}
+.craft-crosslinks{display:flex;align-items:center;gap:14px}.craft-crosslinks>a,.lotus-bottom-links>a{display:inline-flex;align-items:center;gap:7px;color:#80543e;font-size:13px;font-weight:900;text-decoration:none}
+.craft-crosslinks>a:hover,.lotus-bottom-links>a:hover{text-decoration:underline}
+.lotus-page{--clay:#c77d57;--clay-dark:#a96040}
+.lotus-art-panel{background:radial-gradient(ellipse at 50% 46%,#fff9f4 0 36%,#f0e0e8 100%);border-color:#ead8e1}
+.lotus-art-panel:before{border-color:rgba(145,79,113,.14)}
+.lotus-svg{position:relative;z-index:1;width:min(100%,385px);height:auto;overflow:visible}
+.lotus-shadow{fill:#79506a;opacity:.15}
+.lotus-piece{opacity:0;transform:translateY(8px) scale(.94);transform-box:fill-box;transform-origin:center;transition:opacity .42s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.lotus-piece[data-visible="yes"]{opacity:1;transform:translateY(0) scale(1)}
+.lotus-center ellipse:first-child{fill:#e3aa69;stroke:#b77749;stroke-width:3}.lotus-highlight{fill:#f7d7a7;opacity:.85}
+.lotus-back path{fill:#d986a8;stroke:#ac5d83;stroke-width:3;stroke-linejoin:round}
+.lotus-back path:nth-child(2),.lotus-back path:nth-child(4){fill:#e9a8bf}
+.lotus-stem path:first-child{fill:none;stroke:#688b69;stroke-width:13;stroke-linecap:round}
+.lotus-stem path:not(:first-child){fill:#94aa78;stroke:#688b69;stroke-width:3;stroke-linejoin:round}
+.lotus-finish path{stroke:#b77749;stroke-width:2.5;stroke-linecap:round}.lotus-finish circle{fill:#f4d28b}
+.lotus-bottom-links{display:flex;justify-content:space-between;gap:12px;margin:22px 2px 0}
+.lotus-page .craft-art-caption{color:#81566a}
+.lotus-page .craft-progress-track span,.lotus-page .craft-step-track span{background:#c77b9e}
+.lotus-page .craft-phase-dot.active span{background:#c77b9e}
+@media(max-width:780px){.topbar{gap:8px}.signout-button{padding:8px;font-size:12px}.top-links{display:none}.lotus-discovery{grid-template-columns:auto 1fr;padding:22px;gap:14px}.lotus-discovery-button{grid-column:1/-1}.craft-crosslinks{gap:9px}}
+@media(max-width:480px){.craft-crosslinks>a{font-size:12px}.craft-crosslinks{flex-wrap:wrap;justify-content:flex-end}.lotus-bottom-links{flex-direction:column}}
+@media(max-width:380px){.topbar{padding:0 10px;gap:5px}.brand{font-size:18px;gap:5px}.bee-mark{width:32px;height:32px}.lang-switch{gap:1px;padding:3px}.lang-switch button{min-width:35px;padding:0 7px;font-size:12px}.signout-button{gap:4px;padding:7px;font-size:11px}.signout-button svg{width:14px}}
+@media(prefers-reduced-motion:reduce){.lotus-piece{transition:none!important}.lotus-page .craft-celebrate .lotus-svg{animation:none!important}}

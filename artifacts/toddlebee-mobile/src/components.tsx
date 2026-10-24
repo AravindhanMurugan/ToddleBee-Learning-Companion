@@ -7,6 +7,8 @@ import { KeyboardAwareScrollViewCompat } from '@/components/KeyboardAwareScrollV
 import { useColors } from '@/hooks/useColors';
 import { copy } from './i18n';
 import { useAppSettings } from './settings';
+import { useDemoAuth } from './auth';
+import { useRouter } from 'expo-router';
 
 type FeatherName = ComponentProps<typeof Feather>['name'];
 
@@ -23,6 +25,8 @@ export function PageShell({
 }) {
   const colors = useColors();
   const { language, setLanguage } = useAppSettings();
+  const { signOut } = useDemoAuth();
+  const router = useRouter();
   const t = copy[language];
   const content = (
     <>
@@ -33,6 +37,7 @@ export function PageShell({
             <Text>Toddle</Text><Text style={{ color: colors.primary }}>Bee</Text>
           </Text>
         </View>
+        <View style={styles.topActions}>
         <View style={[styles.languageSwitch, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Pressable accessibilityRole="button" accessibilityLabel="Use English" accessibilityState={{ selected: language === 'en' }} onPress={() => setLanguage('en')} style={[styles.languageButton, language === 'en' && { backgroundColor: colors.foreground }]}>
             <Text style={[styles.languageText, { color: language === 'en' ? colors.background : colors.foreground }]}>EN</Text>
@@ -40,6 +45,8 @@ export function PageShell({
           <Pressable accessibilityRole="button" accessibilityLabel="தமிழில் கற்க" accessibilityState={{ selected: language === 'ta' }} onPress={() => setLanguage('ta')} style={[styles.languageButton, language === 'ta' && { backgroundColor: colors.foreground }]}>
             <Text style={[styles.languageText, { color: language === 'ta' ? colors.background : colors.foreground }]}>தமிழ்</Text>
           </Pressable>
+        </View>
+        <Pressable accessibilityRole="button" accessibilityLabel={language === 'ta' ? 'வெளியேறு' : 'Sign out'} testID="button-sign-out" onPress={() => { signOut(); router.replace('/login'); }} style={[styles.signOut, { borderColor: colors.border, backgroundColor: colors.card }]}><Feather name="log-out" size={17} color={colors.foreground} /><Text style={[styles.signOutText, { color: colors.foreground }]}>{language === 'ta' ? 'வெளியேறு' : 'Sign out'}</Text></Pressable>
         </View>
       </View>
       {title && <View style={styles.pageHeading}>
@@ -182,6 +189,9 @@ const styles = StyleSheet.create({
   brandMark: { width: 34, height: 34, borderRadius: 10 },
   brandText: { fontFamily: 'Nunito_900Black', fontSize: 22 },
   languageSwitch: { flexDirection: 'row', borderWidth: 1, borderRadius: 24, padding: 3 },
+  topActions: { flexDirection: 'row', alignItems: 'center', gap: 7 },
+  signOut: { minHeight: 36, borderWidth: 1, borderRadius: 20, paddingHorizontal: 9, flexDirection: 'row', alignItems: 'center', gap: 5 },
+  signOutText: { fontFamily: 'DMSans_700Bold', fontSize: 11 },
   languageButton: { paddingHorizontal: 11, paddingVertical: 7, borderRadius: 20 },
   languageText: { fontFamily: 'DMSans_700Bold', fontSize: 12 },
   pageHeading: { gap: 5, marginTop: 4 },
