@@ -135,7 +135,11 @@ const copy = {
     plusPriceDisclosure: 'Proposed pricing for a future plan. These benefits are not currently active.',
     plusFeatureOne: 'More guided fraction practice', plusFeatureTwo: 'More visual examples to explore',
     plusFeatureThree: 'Family learning summaries', plusFeatureFour: 'Human educator review workflows',
-    checkoutUnavailableTitle: 'Subscriptions are unavailable', noPurchase: 'No payment will be taken. Plus access is not granted.',
+    checkoutUnavailableTitle: 'Demo only — subscriptions are not active', noPurchase: 'No real payment will be taken. Plus access stays inactive.',
+    demoCheckoutButton: 'Open demo checkout', demoCheckoutTitle: 'ToddleBee Plus · demo checkout',
+    demoCheckoutSummary: 'Proposed plan:', demoCheckoutDisclosure: 'This is only a presentation demo. No real payment is processed.',
+    demoSimulateSuccess: 'Show demo success state', demoResultMessage: 'Demo success state shown. No payment was taken and Plus access remains inactive.',
+    closeDemoCheckout: 'Close demo checkout',
     plusDescription: 'More practice, same gentle pace', plusBody: 'A future plan for families who want extra practice and learning tools. Plans and pricing will be shared here when they are ready.',
     proposedMonthly: '₹99/month', noAuth: 'This is not production security.',
     parentNavigation: 'Parent', plusNavigation: 'Plus',
@@ -270,7 +274,11 @@ const copy = {
     plusPriceDisclosure: 'எதிர்காலத் திட்டத்திற்கான முன்மொழியப்பட்ட விலை. இந்த வசதிகள் இப்போது செயல்பாட்டில் இல்லை.',
     plusFeatureOne: 'மேலும் வழிகாட்டப்பட்ட பின்னப் பயிற்சி', plusFeatureTwo: 'ஆராய கூடுதல் பட விளக்கங்கள்',
     plusFeatureThree: 'குடும்பக் கற்றல் சுருக்கங்கள்', plusFeatureFour: 'மனித ஆசிரியர் ஆய்வு வசதிகள்',
-    checkoutUnavailableTitle: 'சந்தா வசதி இப்போது கிடைக்கவில்லை', noPurchase: 'கட்டணம் வசூலிக்கப்படாது. Plus அணுகல் வழங்கப்படாது.',
+    checkoutUnavailableTitle: 'டெமோ மட்டும் — சந்தா செயல்பாட்டில் இல்லை', noPurchase: 'உண்மையான கட்டணம் வசூலிக்கப்படாது. Plus அணுகல் செயல்படுத்தப்படாது.',
+    demoCheckoutButton: 'டெமோ கட்டணப் பக்கத்தைத் திற', demoCheckoutTitle: 'ToddleBee Plus · டெமோ கட்டணம்',
+    demoCheckoutSummary: 'முன்மொழியப்பட்ட திட்டம்:', demoCheckoutDisclosure: 'இது விளக்கத்திற்கான டெமோ மட்டும். உண்மையான கட்டணம் எதுவும் செய்யப்படாது.',
+    demoSimulateSuccess: 'டெமோ வெற்றி நிலையைக் காட்டு', demoResultMessage: 'டெமோ வெற்றி நிலை காட்டப்பட்டது. கட்டணம் எதுவும் வசூலிக்கப்படவில்லை; Plus அணுகல் செயல்படுத்தப்படவில்லை.',
+    closeDemoCheckout: 'டெமோ கட்டணத்தை மூடு',
     plusDescription: 'அதே அன்பான வேகத்தில் மேலும் பயிற்சி', plusBody: 'கூடுதல் பயிற்சி மற்றும் கற்றல் கருவிகள் கொண்ட எதிர்காலத் திட்டம். தயாரானதும் திட்ட விவரங்களும் விலையும் இங்கே பகிரப்படும்.',
     proposedMonthly: '₹99/மாதம்', noAuth: 'இது உண்மையான பாதுகாப்பு வசதி அல்ல.',
     parentNavigation: 'பெற்றோர்', plusNavigation: 'Plus',
@@ -957,6 +965,7 @@ function AdminQueue() {
 function PricingPage() {
   const { language } = useLanguage();
   const t = copy[language];
+  const [demoCheckoutStep, setDemoCheckoutStep] = useState<'closed' | 'ready' | 'simulated'>('closed');
   return <main className="page">
     <div className="eyebrow">{t.pricingEyebrow}</div><h1>{t.pricing}</h1><p style={{ color: '#53657b', maxWidth: 670, fontSize: 17, lineHeight: 1.65 }}>{t.pricingText} {t.plansIntro}</p>
     <div className="pricing-grid">
@@ -972,6 +981,26 @@ function PricingPage() {
         <p style={{ color: '#53657b', lineHeight: 1.65 }}>{t.plusPriceDisclosure}</p>
         <ul><li>{t.plusFeatureOne}</li><li>{t.plusFeatureTwo}</li><li>{t.plusFeatureThree}</li><li>{t.plusFeatureFour}</li></ul>
         <div className="unavailable" role="status" data-testid="status-payment-unavailable"><strong>{t.checkoutUnavailableTitle}</strong><br />{t.noPurchase}</div>
+        {demoCheckoutStep === 'closed' ? (
+          <button className="btn btn-secondary" style={{ marginTop: 18 }} onClick={() => setDemoCheckoutStep('ready')} data-testid="button-open-demo-checkout">
+            {t.demoCheckoutButton}<LockKeyhole size={17} />
+          </button>
+        ) : (
+          <div className="notice" role="region" aria-label={t.demoCheckoutTitle} style={{ marginTop: 18 }} data-testid="panel-demo-checkout">
+            <strong>{t.demoCheckoutTitle}</strong>
+            <p>{t.demoCheckoutSummary} {t.proposedMonthly} · {t.demoCheckoutDisclosure}</p>
+            {demoCheckoutStep === 'ready' ? (
+              <button className="btn btn-secondary" onClick={() => setDemoCheckoutStep('simulated')} data-testid="button-simulate-demo-success">
+                {t.demoSimulateSuccess}
+              </button>
+            ) : (
+              <p role="status" data-testid="status-demo-checkout-result">{t.demoResultMessage}</p>
+            )}
+            <button className="btn btn-secondary" style={{ marginLeft: 8 }} onClick={() => setDemoCheckoutStep('closed')} data-testid="button-close-demo-checkout">
+              {t.closeDemoCheckout}
+            </button>
+          </div>
+        )}
       </section>
     </div>
   </main>;

@@ -1,4 +1,4 @@
 - [ToddleBee language access](toddlebee-language-access.md) — children and parents can choose or change English/Tamil at any time.
 - [ToddleBee Expo build port](toddlebee-expo-build-port.md) — keep the temporary Metro listener off 8081, reserved by the mockup preview workflow.
-- [ToddleBee subscription gating](toddlebee-subscription-preference.md) — keep checkout unavailable until the user selects a supported billing provider.
+- [ToddleBee subscription demo](toddlebee-subscription-preference.md) — use a clearly labelled local simulation only; never charge or activate Plus.
 - [ToddleBee login display](toddlebee-login-display.md) — never display demo credential values on the login screens.

@@ -398,6 +398,7 @@ export function ParentScreen() {
   const reviews = useListEducatorReviews();
   const decide = useDecideEducatorReview();
   const [showEducator, setShowEducator] = useState(false);
+  const [demoCheckoutStep, setDemoCheckoutStep] = useState<'closed' | 'ready' | 'simulated'>('closed');
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [reviewNotice, setReviewNotice] = useState('');
   const localActivity = agent.data?.filter((entry) => entry.provider === 'local_demo') ?? [];
@@ -446,6 +447,15 @@ export function ParentScreen() {
     <Card>
       <Eyebrow>{t.plusTitle}</Eyebrow><AppText>{t.plusBody}</AppText>
       <Notice>{t.noPurchase}</Notice>
+      {demoCheckoutStep === 'closed' ? (
+        <PrimaryButton label={t.demoCheckoutButton} icon="shield" secondary onPress={() => setDemoCheckoutStep('ready')} testID="button-open-demo-checkout" />
+      ) : <>
+        <Notice>{t.demoCheckoutSummary} {t.demoPrice}. {t.demoCheckoutDisclosure}</Notice>
+        {demoCheckoutStep === 'ready' ? (
+          <PrimaryButton label={t.demoSimulateSuccess} icon="check-circle" secondary onPress={() => setDemoCheckoutStep('simulated')} testID="button-simulate-demo-success" />
+        ) : <Notice>{t.demoResultMessage}</Notice>}
+        <PrimaryButton label={t.closeDemoCheckout} icon="x" secondary onPress={() => setDemoCheckoutStep('closed')} testID="button-close-demo-checkout" />
+      </>}
     </Card>
 
     <Card>

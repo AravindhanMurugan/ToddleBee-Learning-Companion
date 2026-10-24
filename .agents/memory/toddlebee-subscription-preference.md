@@ -1,10 +1,10 @@
 ---
-name: ToddleBee subscription gating
-description: User's current decision to keep ToddleBee subscription checkout unavailable.
+name: ToddleBee subscription demo
+description: User's current choice to present a simulated checkout rather than a live payment.
 ---
 
-Keep ToddleBee subscription checkout unavailable until the user selects a supported billing provider.
+Use a clearly labelled, local-only simulated subscription checkout for ToddleBee. Never charge money or activate paid access from the simulation.
 
-**Why:** On 2026-10-24, after Cashfree was ruled out of the supported billing flow, the user chose to keep checkout unavailable for now.
+**Why:** On 2026-10-24, after Cashfree was ruled out of the supported billing flow, the user asked for a demo application as the alternative.
 
-**How to apply:** Do not re-enable payment attempts or grant paid access unless the user explicitly chooses a supported provider.
+**How to apply:** Keep all success states explicitly labelled as demonstrations, with no payment request and no Plus entitlement.
