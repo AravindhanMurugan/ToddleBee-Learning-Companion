@@ -1,2 +1,3 @@
 - [ToddleBee language access](toddlebee-language-access.md) — children and parents can choose or change English/Tamil at any time.
 - [ToddleBee Expo build port](toddlebee-expo-build-port.md) — keep the temporary Metro listener off 8081, reserved by the mockup preview workflow.
+- [ToddleBee subscription preference](toddlebee-subscription-preference.md) — the user wants Pine Labs for ToddleBee subscriptions.
